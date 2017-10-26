@@ -31,23 +31,6 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-var dbServer = new mongo.Server(configs.dbServer, 27017);
-var db = new mongo.Db(configs.mainDb, dbServer, {safe:true});
-db.open(function(err, db){
-    if(err){
-        console.log("Can't open database...");
-    }else{
-        test.GetData(db, function(err, result){
-            if(err){
-                console.log("Shuting down server...");
-            }else{
-                console.log("No problema senor!");
-                console.log(result);
-            }
-            db.close();
-        });
-    }
-});
 
 
 

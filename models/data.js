@@ -10,7 +10,7 @@ var listOfWinterSlides;
 var dict = [];
 
 
-var GetData = function(db, callback){
+var GetDataFromMontrealCityAPI = function(db, callback){
     request.get(configs.listOfAquaticInstallationsUrl, function(err, res, data){
         if(err){
             console.log("Problem with the request...\n", err);
@@ -18,10 +18,8 @@ var GetData = function(db, callback){
         }else{
 
             console.log("Success to read data.\n");
-            //listOfAquaticInstallations = result;
             listOfAquaticInstallations = csvJSON(data);
             console.log("csv parsed!\n");
-            //console.log(listOfAquaticInstallations);
             request.get(configs.listOfRinksUrl, function(err, res, data){
                 if(err){
                     console.log("Problem with the request...\n", err);
@@ -51,30 +49,10 @@ var GetData = function(db, callback){
                                         }else{
 
                                             console.log("xml parsed!\n");
-                                            listOfWinterSlide = result;
-                                            sendDataToCollection(db, configs.aquaticInstallationsDb, listOfAquaticInstallations, function(err, result){
+                                            listOfWinterSlides = result.glissades.glissade;
+                                            sendAllDataToCollection(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, function(err){
                                                 if(err){
-                                                    console.log("Error inserting data1...\n");
-                                                    //console.log(listOfAquaticInstallations)
-                                                    return callback(err);
-                                                }else{
-
-                                                    sendDataToCollection(db, configs.rinksDb, listOfRinks, function(err, result){
-                                                        if(err){
-                                                            console.log("Error inserting data2...\n")
-                                                            //console.log(listOfRinks)
-                                                            return callback(err);
-                                                        }else{
-
-                                                            sendDataToCollection(db, configs.winterSlidesDb, listOfWinterSlide, function(err, result){
-                                                                if(err){
-                                                                    console.log("Error inserting data3...\n")
-                                                                    //console.log(listOfWinterSlides)
-                                                                    return callback(err);
-                                                                }
-                                                            });
-                                                        }
-                                                    });
+                                                    console.log("Error sending data to database...")
                                                 }
                                             });
                                         }
@@ -82,6 +60,30 @@ var GetData = function(db, callback){
                                 }
                             });
                         }
+                    });
+                }
+            });
+        }
+    });
+}
+
+var sendAllDataToCollection = function(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, callback){
+    sendDataToCollection(db, configs.aquaticInstallationsDb, listOfAquaticInstallations, function(err, result){
+        if(err){
+            console.log("Error inserting data1...\n");
+            return callback(err);
+        }else{
+            sendDataToCollection(db, configs.rinksDb, listOfRinks, function(err, result){
+                if(err){
+                    console.log("Error inserting data2...\n")
+                    return callback(err);
+                }else{
+                    sendDataToCollection(db, configs.winterSlidesDb, listOfWinterSlides, function(err, result){
+                        if(err){
+                            console.log("Error inserting data3...\n")
+                            return callback(err);
+                        }
+                        return callback(null);
                     });
                 }
             });
@@ -124,29 +126,4 @@ function csvJSON(csv){
   return result;
 }
 
-//Fonction non-utilisée
-var sendToDatabase = function(data){
-    var server = new mongo.Server("localhost", 27017);
-    var db = new mongo.Db("atelier", server, {safe:true});
-    db.open(function (err, db) {
-        if (err) {
-            console.log("Impossible d'ouvrir une connexion sur la base de données.", err);
-        } else {
-            db.collection("laboNode", function (err, collection) {
-                if (err) {
-                    console.log("Erreur avec la base de données.", err);
-                    db.close();
-                } else {
-                    collection.insert(list, function (err, result) {
-                        if (err) {
-                            console.log("Erreur lors de l'insertion.", err);
-                        }
-                        db.close();
-                    });
-                }
-            });
-        }
-    });
-}
-
-module.exports.GetData = GetData;
+module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
