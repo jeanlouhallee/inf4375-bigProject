@@ -1,22 +1,23 @@
 var express = require('express');
+var data = require('../models/data');
+var database = require('../models/database');
 var router = express.Router();
-
-var data = [
-    [
-        brand = "Honda",
-        model = "Civic",
-        year = 2012
-    ],
-    [
-        brand = "Acura",
-        model = "TSX",
-        year = 2007
-    ]
-]
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', data: data });
+    database.getConnection(function(err, db){
+        if(err){
+            res.render('error', {error: err});
+        }else{
+            data.getData(db, function(err, data){
+                if(err){
+                    res.render('error', {error: err});
+                }else{
+                    res.render('index', { title: 'Homepage', data: data });
+                }
+            });
+        }
+    });
 });
 
 module.exports = router;

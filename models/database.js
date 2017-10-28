@@ -5,9 +5,9 @@ var configs = require('../config.js');
 
 var dbInstance;
 
-module.exports.getConnection = function(callback) {
+var getConnection = function(callback) {
   if (dbInstance) {
-    callback(null, dbInstance);
+    return callback(null, dbInstance);
   } else {
     var server = new mongodb.Server(configs.dbServer, 27017, {auto_reconnect: true});
     var db = new mongodb.Db(configs.mainDb, server, {safe: true});
@@ -15,11 +15,13 @@ module.exports.getConnection = function(callback) {
     if (!db.openCalled) {
       db.open(function(err, db) {
         if (err) {
-          callback(err);
+          return callback(err);
         }
         dbInstance = db;
-        callback(err, dbInstance);
+        return callback(err, dbInstance);
       });
     }
   }
 };
+
+module.exports.getConnection = getConnection;

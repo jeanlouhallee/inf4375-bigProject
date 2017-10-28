@@ -13,7 +13,6 @@ var dict = [];
 var GetDataFromMontrealCityAPI = function(db, callback){
     request.get(configs.listOfAquaticInstallationsUrl, function(err, res, data){
         if(err){
-            console.log("Problem with the request...\n", err);
             return callback(err);
         }else{
 
@@ -22,7 +21,6 @@ var GetDataFromMontrealCityAPI = function(db, callback){
             console.log("csv parsed!\n");
             request.get(configs.listOfRinksUrl, function(err, res, data){
                 if(err){
-                    console.log("Problem with the request...\n", err);
                     return callback(err);
                 }else{
 
@@ -37,7 +35,6 @@ var GetDataFromMontrealCityAPI = function(db, callback){
                             listOfRinks = result.patinoires.patinoire;
                             request.get(configs.listOfWinterSlidesUrl, function(err, res, data){
                                 if(err){
-                                    console.log("Problem with the request...\n", err);
                                     return callback(err);
                                 }else{
 
@@ -110,7 +107,7 @@ var sendDataToCollection = function(db, collection, data, callback){
 }
 
 //Fonction prise sur un site web: http://techslides.com/convert-csv-to-json-in-javascript
-function csvJSON(csv){
+var csvJSON = function(csv){
   var lines=csv.split("\n");
   var result = [];
   var headers=lines[0].split(",");
@@ -126,4 +123,19 @@ function csvJSON(csv){
   return result;
 }
 
+var getData = function(db, callback){
+    var data = [
+        [
+            object = "propriété",
+            Autre = "pig"
+        ],
+        [
+            object = "propriété",
+            Autre = "pig"
+        ]
+    ]
+    return callback(null, data);
+}
+
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
+module.exports.getData = getData;

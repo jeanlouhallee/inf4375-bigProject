@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
-var users = require('./routes/users');
+var doc = require('./routes/doc');
 var mongo = require('mongodb');
 var configs = require('./config');
 var data = require('./models/data');
@@ -25,42 +25,38 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var task = cron.schedule('* * * * *', function(){
+var updateDatabase = function(callback){
     db.getConnection(function(err, res){
         if(err){
-            console.log("Can't reach database...")
+            return callback(err);
         }else{
             data.GetDataFromMontrealCityAPI(res, function(err, res){
                 if(err){
-                    console.log("Can't get data from the city of Montreal website...");
+                    return callback(err);
                 }
+                return callback(null);
             });
+        }
+    });
+}
+var task = cron.schedule('* * * * *', function(){
+    updateDatabase(function(err){
+        if(err){
+            console.log("Something went terribly wrong...\n\n\n", err);
         }
     });
 }, false);
 
+updateDatabase(function(err){
+    if(err){
+        console.log("Something went terribly wrong...\n\n\n", err);
+    }
+});
+
 task.start();
 
-// var dbServer = new mongo.Server(configs.dbServer, 27017);
-// var db = new mongo.Db(configs.mainDb, dbServer, {safe:true});
-// db.open(function(err, db){
-//     if(err){
-//         console.log("Can't open database...");
-//     }else{
-//         test.GetDataFromMontrealCityAPI(db, function(err, result){
-//             if(err){
-//                 console.log("Shuting down server...");
-//             }else{
-//                 console.log("No problema senor!");
-//                 console.log(result);
-//             }
-//             db.close();
-//         });
-//     }
-// });
-
 app.use('/', index);
-app.use('/users', users);
+app.use('/doc', doc);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

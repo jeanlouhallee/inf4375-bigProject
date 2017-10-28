@@ -7,9 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('tp:server');
 var http = require('http');
-var test = require('../models/data');
-var mongo = require('mongodb');
-var configs = require('../config.js');
 
 /**
  * Get port from environment and store in Express.
