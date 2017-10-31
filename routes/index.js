@@ -1,5 +1,4 @@
 var express = require('express');
-var data = require('../models/data');
 var database = require('../models/database');
 var router = express.Router();
 
@@ -9,11 +8,11 @@ router.get('/', function(req, res, next) {
         if(err){
             res.render('error', {error: err});
         }else{
-            data.getData(db, function(err, data){
+            database.getData(db, function(err, data){
                 if(err){
                     res.render('error', {error: err});
                 }else{
-                    res.render('index', { title: 'Homepage', data: data });
+                    res.render('index', { title: 'Homepage', cars: data });
                 }
             });
         }

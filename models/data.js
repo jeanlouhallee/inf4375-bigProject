@@ -123,19 +123,4 @@ var csvJSON = function(csv){
   return result;
 }
 
-var getData = function(db, callback){
-    var data = [
-        [
-            object = "propriété",
-            Autre = "pig"
-        ],
-        [
-            object = "propriété",
-            Autre = "pig"
-        ]
-    ]
-    return callback(null, data);
-}
-
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
-module.exports.getData = getData;

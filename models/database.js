@@ -24,4 +24,22 @@ var getConnection = function(callback) {
   }
 };
 
+var getData = function(db, callback){
+    let query = {};
+    db.collection("Rinks").find(query).toArray(function(err, result){
+        if(err){
+            console.log("Cannot fetch data from database...\n");
+            return callback(err);
+        }else{
+            return callback(null, result);
+        }
+    });
+    // var cars = [
+    //     {marque: "Honda", modele:"Civic"},
+    //     {marque:"Acura", modele:"TSX"}
+    //
+    // return callback(null, cars);
+}
+
 module.exports.getConnection = getConnection;
+module.exports.getData = getData;
