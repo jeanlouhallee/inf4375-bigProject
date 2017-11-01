@@ -26,35 +26,61 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// var updateDatabase = function(callback){
-//     db.getConnection(function(err, res){
-//         if(err){
-//             return callback(err);
-//         }else{
-//             data.GetDataFromMontrealCityAPI(res, function(err, res){
-//                 if(err){
-//                     return callback(err);
-//                 }
-//                 return callback(null);
-//             });
-//         }
-//     });
-// }
-// var task = cron.schedule('* * * * *', function(){
-//     updateDatabase(function(err){
-//         if(err){
-//             console.log("Something went terribly wrong...\n\n\n", err);
-//         }
-//     });
-// }, false);
-//
-// updateDatabase(function(err){
-//     if(err){
-//         console.log("Something went terribly wrong...\n\n\n", err);
-//     }
-// });
-//
-// task.start();
+var updateDatabase = function(callback){
+    db.getConnection(function(err, res){
+        if(err){
+            return callback(err);
+        }else{
+            data.GetDataFromMontrealCityAPI(res, function(err, res){
+                if(err){
+                    return callback(err);
+                }
+                return callback(null);
+            });
+        }
+    });
+}
+var task = cron.schedule('0 0 * * *', function(){
+    updateDatabase(function(err){
+        if(err){
+            console.log("Something went terribly wrong...\n\n\n", err);
+        }
+    });
+}, false);
+
+var startUpTasks = function(callback){
+    db.getConnection(function(err, db){
+        if(err){
+            return callback(err);
+        }else{
+            db.dropDatabase(function(err, res){
+                if(err){
+                    console.log("Can't drop database...");
+                    return callback(err);
+                }else{
+                    console.log("Dropped database!");
+                    updateDatabase(function(err){
+                        if(err){
+                            console.log("Can't update data...");
+                            return callback(err);
+                        }else{
+                            console.log("Data updated!");
+                            return callback(null);
+                        }
+                    })
+                }
+            });
+        }
+    });
+}
+
+startUpTasks(function(err){
+    if(err){
+        console.log("Something went terribly wrong...\n\n\n", err);
+    }
+});
+
+task.start();
 
 app.use('/', index);
 app.use('/doc', doc);
