@@ -1,7 +1,7 @@
 /////Pris dans les notes de Jacques Berger
 
 var mongodb = require("mongodb");
-var configs = require('../config.js');
+var config = require('../config.js');
 
 var dbInstance;
 
@@ -9,8 +9,8 @@ var getConnection = function(callback) {
   if (dbInstance) {
     return callback(null, dbInstance);
   } else {
-    var server = new mongodb.Server(configs.dbServer, 27017, {auto_reconnect: true});
-    var db = new mongodb.Db(configs.mainDb, server, {safe: true});
+    var server = new mongodb.Server(config.dbServer, 27017, {auto_reconnect: true});
+    var db = new mongodb.Db(config.mainDb, server, {safe: true});
 
     if (!db.openCalled) {
       db.open(function(err, db) {
@@ -24,9 +24,9 @@ var getConnection = function(callback) {
   }
 };
 
-var getData = function(db, callback){
-    let query = {"condition":"Mauvaise"};
-    db.collection(configs.winterSlidesDb).find(query).toArray(function(err, result){
+var getDataFromOneCollection = function(db, collection, callback){
+    let query = {};
+    db.collection(collection).find(query).toArray(function(err, result){
         if(err){
             console.log("Cannot fetch data from database...\n");
             return callback(err);
@@ -37,4 +37,4 @@ var getData = function(db, callback){
 }
 
 module.exports.getConnection = getConnection;
-module.exports.getData = getData;
+module.exports.getDataFromOneCollection = getDataFromOneCollection;

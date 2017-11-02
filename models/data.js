@@ -1,8 +1,7 @@
 var request = require('request');
-var configs = require('../config.js');
+var config = require('../config.js');
 var fs = require('fs');
-var mongo = require('mongodb');
-var xmlParser = require('xml2js').parseString;
+var xml2js = require('xml2js').parseString;
 
 var listOfAquaticInstallations;
 var listOfRinks;
@@ -11,21 +10,21 @@ var dict = [];
 
 
 var GetDataFromMontrealCityAPI = function(db, callback){
-    request.get(configs.listOfAquaticInstallationsUrl, function(err, res, data){
+    request.get(config.listOfAquaticInstallationsUrl, function(err, res, data){
         if(err){
             return callback(err);
         }else{
 
             console.log("Success to read data.\n");
-            listOfAquaticInstallations = csvJSON(data);
+            listOfAquaticInstallations = csvToJSON(data);
             console.log("csv parsed!\n");
-            request.get(configs.listOfRinksUrl, function(err, res, data){
+            request.get(config.listOfRinksUrl, function(err, res, data){
                 if(err){
                     return callback(err);
                 }else{
 
                     console.log("Success to read data.\n");
-                    xmlParser(data, function(err, result){
+                    xml2js(data, {explicitArray:false, ignoreAttrs:true}, function(err, result){
                         if(err){
                             console.log("Can't parse xml...\n");
                             return callback(err);
@@ -33,13 +32,13 @@ var GetDataFromMontrealCityAPI = function(db, callback){
 
                             console.log("xml parsed!\n");
                             listOfRinks = result.patinoires.patinoire;
-                            request.get(configs.listOfWinterSlidesUrl, function(err, res, data){
+                            request.get(config.listOfWinterSlidesUrl, function(err, res, data){
                                 if(err){
                                     return callback(err);
                                 }else{
 
                                     console.log("Success to read data.\n");
-                                    xmlParser(data, function(err, result){
+                                    xml2js(data, {explicitArray:false, ignoreAttrs:true}, function(err, result){
                                         if(err){
                                             console.log("Can't parse xml...\n")
                                             return callback(err);
@@ -67,17 +66,17 @@ var GetDataFromMontrealCityAPI = function(db, callback){
 }
 
 var sendAllDataToCollection = function(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, callback){
-    sendDataToCollection(db, configs.aquaticInstallationsDb, listOfAquaticInstallations, function(err, result){
+    sendDataToCollection(db, config.aquaticInstallationsDb, listOfAquaticInstallations, function(err, result){
         if(err){
             console.log("Error inserting data1...\n");
             return callback(err);
         }else{
-            sendDataToCollection(db, configs.rinksDb, listOfRinks, function(err, result){
+            sendDataToCollection(db, config.rinksDb, listOfRinks, function(err, result){
                 if(err){
                     console.log("Error inserting data2...\n")
                     return callback(err);
                 }else{
-                    sendDataToCollection(db, configs.winterSlidesDb, listOfWinterSlides, function(err, result){
+                    sendDataToCollection(db, config.winterSlidesDb, listOfWinterSlides, function(err, result){
                         if(err){
                             console.log("Error inserting data3...\n")
                             return callback(err);
@@ -108,16 +107,19 @@ var sendDataToCollection = function(db, collection, data, callback){
     });
 }
 
-//Fonction prise sur un site web: http://techslides.com/convert-csv-to-json-in-javascript
-var csvJSON = function(csv){
-  var lines=csv.split("\n");
+//myString.substr(1).slice(0, -1)
+//Fonction inspirée du site web http://techslides.com/convert-csv-to-json-in-javascript
+var csvToJSON = function(csv){
+  var lines = csv.split("\n");
   var result = [];
-  var headers=lines[0].split(",");
-  for(var i=1;i<lines.length;i++){
+  var headers = lines[0].split(",");
+  for(var i = 1; i < lines.length; i++){
 	  var obj = {};
-	  var currentline=lines[i].split(",");
-
-	  for(var j=0;j<headers.length;j++){
+	  var currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+	  for(var j = 0; j < headers.length; j++){
+          if(currentline[j] && currentline[j].charAt(0) === '\"'){
+              currentline[j] = currentline[j].substr(1).slice(0, -1);
+          }
 		  obj[headers[j]] = currentline[j];
 	  }
 	  result.push(obj);

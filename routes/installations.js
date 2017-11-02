@@ -1,5 +1,6 @@
 var express = require('express');
 var database = require('../models/database');
+var config = require('../config');
 var router = express.Router();
 
 /* GET users listing. */
@@ -8,7 +9,7 @@ router.get('/', function(req, res, next) {
         if(err){
             res.render('error', {error: err});
         }else{
-            database.getData(db, function(err, data){
+            database.getDataFromOneCollection(db, config.aquaticInstallationsDb, function(err, data){
                 if(err){
                     res.render('error', {error: err});
                 }else{
