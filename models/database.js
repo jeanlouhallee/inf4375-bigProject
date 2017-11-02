@@ -1,4 +1,4 @@
-//Pris dans les notes de Jacques Berger
+/////Pris dans les notes de Jacques Berger
 
 var mongodb = require("mongodb");
 var configs = require('../config.js');
@@ -25,8 +25,8 @@ var getConnection = function(callback) {
 };
 
 var getData = function(db, callback){
-    let query = {};
-    db.collection(configs.aquaticInstallationsDb).find(query).toArray(function(err, result){
+    let query = {"condition":"Mauvaise"};
+    db.collection(configs.winterSlidesDb).find(query).toArray(function(err, result){
         if(err){
             console.log("Cannot fetch data from database...\n");
             return callback(err);

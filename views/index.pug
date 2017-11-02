@@ -1,20 +1,7 @@
 extends layout
 
 block content
-    h1= title
-    p Welcome to #{title}
-    if cars.length > 0
-        table
-            thead
-                tr
-                    th Premier
-            tbody
-                each car in cars
-                    tr
-                        td= car.nom
-                        td
-                            
-                            
-    else
-        div nothing to show here...
-        
+    div.myDiv
+        h1= title
+        p Homepage!
+    

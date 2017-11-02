@@ -50,6 +50,8 @@ var GetDataFromMontrealCityAPI = function(db, callback){
                                             sendAllDataToCollection(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, function(err){
                                                 if(err){
                                                     console.log("Error sending data to database...")
+                                                }else{
+                                                    return callback(null);
                                                 }
                                             });
                                         }
