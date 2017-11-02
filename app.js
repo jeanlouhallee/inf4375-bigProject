@@ -55,13 +55,12 @@ var startUpTasks = function(callback){
         }else{
             db.dropDatabase(function(err, res){
                 if(err){
-                    console.log("Can't drop database...\n");
+                    err.myMessage = "Can't drop database.";
                     return callback(err);
                 }else{
-                    console.log("Dropped database!\n");
+                    console.log("Database dropped!\n");
                     updateDatabase(function(err){
                         if(err){
-                            console.log("Can't update data...\n");
                             return callback(err);
                         }else{
                             console.log("Data updated!\n");
@@ -76,7 +75,7 @@ var startUpTasks = function(callback){
 
 startUpTasks(function(err){
     if(err){
-        console.log("Something went terribly wrong...\n\n\n", err);
+        console.log(err);
     }
 });
 

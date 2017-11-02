@@ -1,10 +1,10 @@
-/////Pris dans les notes de Jacques Berger
 
 var mongodb = require("mongodb");
 var config = require('../config.js');
 
 var dbInstance;
 
+//Pris dans les notes de Jacques Berger
 var getConnection = function(callback) {
   if (dbInstance) {
     return callback(null, dbInstance);
@@ -28,7 +28,7 @@ var getDataFromOneCollection = function(db, collection, callback){
     let query = {};
     db.collection(collection).find(query).toArray(function(err, result){
         if(err){
-            console.log("Cannot fetch data from database...\n");
+            err.myMessage = "Can't fetch data from collection.";
             return callback(err);
         }else{
             return callback(null, result);

@@ -3,13 +3,12 @@ var database = require('../models/database');
 var config = require('../config');
 var router = express.Router();
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
             res.render('error', {error: err});
         }else{
-            database.getDataFromOneCollection(db, config.aquaticInstallationsDb, function(err, data){
+            database.getDataFromOneCollection(db, config.aquaticInstallationsDb , function(err, data){
                 if(err){
                     res.render('error', {error: err});
                 }else{
