@@ -8,8 +8,67 @@ var listOfRinks;
 var listOfWinterSlides;
 var dict = [];
 
-
 var GetDataFromMontrealCityAPI = function(db, callback){
+    var allData = []    ;
+    request.get(config.listOfAquaticInstallationsUrl, function(err, res, data){
+        if(err){
+            err.myMessage = "Web request failed.";
+            return callback(err);
+        }else{
+
+            listOfAquaticInstallations = csvToJSON(data);
+            allData.push(listOfAquaticInstallations);
+            request.get(config.listOfRinksUrl, function(err, res, data){
+                if(err){
+                    err.myMessage = "Web request failed.";
+                    return callback(err);
+                }else{
+
+                    xml2js(data, {explicitArray:false, ignoreAttrs:true}, function(err, result){
+                        if(err){
+                            err.myMessage = "Can't parse xml.";
+                            return callback(err);
+                        }else{
+
+                            listOfRinks = result.patinoires.patinoire;
+                            allData.push(listOfRinks);
+                            request.get(config.listOfWinterSlidesUrl, function(err, res, data){
+                                if(err){
+                                    err.myMessage = "Web request failed.";
+                                    return callback(err);
+                                }else{
+
+                                    xml2js(data, {explicitArray:false, ignoreAttrs:true}, function(err, result){
+                                        if(err){
+                                            err.myMessage = "Can't parse xml.";
+                                            return callback(err);
+                                        }else{
+
+                                            listOfWinterSlides = result.glissades.glissade;
+                                            allData.push(listOfWinterSlides);
+                                            dataToSave = [].concat.apply([], allData);
+                                            sendDataToCollection(db, config.collection, dataToSave, function(err){
+                                                if(err){
+                                                    err.myMessage = "Can't send data to collection.";
+                                                    return callback(err);
+                                                }else{
+                                                    return callback(null);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+//NON UTILISÉ
+var GetDataFromMontrealCityAPI2 = function(db, callback){
     request.get(config.listOfAquaticInstallationsUrl, function(err, res, data){
         if(err){
             err.myMessage = "Web request failed.";
@@ -63,6 +122,7 @@ var GetDataFromMontrealCityAPI = function(db, callback){
     });
 }
 
+//NON UTILISÉE
 var sendAllDataToCollection = function(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, callback){
     sendDataToCollection(db, config.aquaticInstallationsDb, listOfAquaticInstallations, function(err, result){
         if(err){

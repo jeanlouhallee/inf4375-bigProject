@@ -8,12 +8,16 @@ router.get('/', function(req, res, next) {
         if(err){
             res.render('error', {error: err});
         }else{
-            database.getDataFromOneCollection(db, config.aquaticInstallationsDb , function(err, data){
+            database.getDataFromOneCollection(db, config.collection, function(err, data){
                 if(err){
                     res.render('error', {error: err});
                 }else{
                     let result = JSON.stringify(data, null, 2);
-                    res.render('installations', { title: 'Installations', installations: result});
+                    if(req.query.arrondissement){
+                        res.json(result);
+                    }else{
+                        res.render('installations', { title: 'Installations', installations: result});
+                    }
                 }
             });
         }

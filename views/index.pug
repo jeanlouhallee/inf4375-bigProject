@@ -3,5 +3,11 @@ extends layout
 block content
     div.myDiv
         h1= title
-        p Homepage!
+            form(method='POST' action='')
+                lu
+                    li
+                        label(for='input') Input
+                        input.form-control(type='text')
+                    li
+                        button.btn.btn-primary(type='submit') Submit
     

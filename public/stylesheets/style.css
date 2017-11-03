@@ -31,3 +31,32 @@ body {
     background-color: #4CAF50;
     color: white;
 }
+
+li {
+    padding: 0;
+    display: block;
+    list-style: none;
+    margin: 10px 0 0 0;
+}
+
+label {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin:0 0 3px 0;
+    padding:0px;
+    display:block;
+    font-weight: bold;
+}
+
+button.btn.btn-primary {
+    background: #1abc9c;
+    padding: 8px 15px 8px 15px;
+    border: none;
+    color: #fff;
+}
+
+button.btn.btn-primary:hover {
+    background: #109177;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+}

@@ -73,11 +73,11 @@ var startUpTasks = function(callback){
     });
 }
 
-startUpTasks(function(err){
-    if(err){
-        console.log(err);
-    }
-});
+// startUpTasks(function(err){
+//     if(err){
+//         console.log(err);
+//     }
+// });
 
 task.start();
 
