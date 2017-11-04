@@ -1,10 +1,19 @@
 body {
     margin:0;
+    background: #F7F7F7;
 }
 
-.myDiv {
+.content {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.form-content {
+    margin: 50px 0 0 0;
+    padding: 20px;
+    max-width: 250px;
+    background: #e8eeef;
+    border-radius: 8px;
 }
 
 .topnav {
@@ -17,7 +26,7 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 15px 15px;
     text-decoration: none;
     font-size: 17px;
 }
@@ -40,11 +49,45 @@ li {
 }
 
 label {
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 22px "Lucida Grande", Helvetica, Arial, sans-serif;
     margin:0 0 3px 0;
     padding:0px;
     display:block;
     font-weight: bold;
+}
+
+input {
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+}
+
+input:focus {
+    box-shadow: 0 0 5px #43D1AF;
+    padding: 3%;
+    border: 1px solid #43D1AF;
+}
+
+select {
+    width: 100%;
+    background: #fff;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
 }
 
 button.btn.btn-primary {
