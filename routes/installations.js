@@ -8,15 +8,20 @@ router.get('/', function(req, res, next) {
         if(err){
             res.render('error', {error: err});
         }else{
-            database.getDataFromOneCollection(db, config.collection, function(err, data){
+            let query;
+            if(req.query.arrondissement){
+                query = {"arrondisse": req.query.arrondissement};
+            }
+            db.collection(config.collection).find(query).toArray(function(err, result){
                 if(err){
                     res.render('error', {error: err});
                 }else{
-                    let result = JSON.stringify(data, null, 2);
-                    if(req.query.arrondissement){
-                        res.json(result);
+                    let data = JSON.stringify(result, null, 2);
+                    if(query){
+                        //res.json(result);
+                        res.render('installations', { title: 'Installations', installations: data});
                     }else{
-                        res.render('installations', { title: 'Installations', installations: result});
+                        res.render('installations', { title: 'Installations', installations: data});
                     }
                 }
             });

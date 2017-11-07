@@ -23,18 +23,6 @@ var getConnection = function(callback){
       }
   }
 };
-    
-var getDataFromOneCollection = function(db, collection, callback){
-    let query = {};
-    db.collection(collection).find(query).toArray(function(err, result){
-        if(err){
-            err.myMessage = "Can't fetch data from collection.";
-            return callback(err);
-        }else{
-            return callback(null, result);
-        }
-    });
-}
 
 module.exports.getConnection = getConnection;
-module.exports.getDataFromOneCollection = getDataFromOneCollection;
+module.exports.getDataFromCollection = getDataFromCollection;
