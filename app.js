@@ -39,9 +39,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+///A MODIFIER POUR LA LSITE D'ARRONDISSEMENTS
 var task = cron.schedule('0 0 * * *', function(){
-    startup.dateDatabase(function(err){
+    startup.updateDatabase(function(err){
         if(err){
             console.log("Something went terribly wrong...\n\n\n", err);
         }

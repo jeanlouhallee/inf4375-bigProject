@@ -17,6 +17,7 @@
 var express = require('express');
 var database = require('../models/database');
 var config = require('../config');
+var data = require('../models/data');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -28,22 +29,16 @@ router.get('/', function(req, res, next) {
                 if(err){
                     res.render('500');
                 }else{
-                    collection.distinct('nom', {"nom" : {$ne : null}}, function(err, data){
+                    collection.find({"nom":"Parc Goulet"}, function(err, result){
                         if(err){
                             res.render('500');
                         }else{
-                            collection.find({"nom":"Parc Goulet"}, function(err, result){
-                                if(err){
-                                    res.render('500');
-                                }else{
-                                    console.log(result);
-                                    // obj = JSON.parse(result);
-                                    res.render('index', { title: 'Installations de la ville de Montréal', installations: data, test: result});
-                                }
-                            });
-                            // res.render('index', { title: 'Installations de la ville de Montréal', installlations: data});
+                            console.log(result);
+                            // obj = JSON.parse(result);
+                            res.render('index', { title: 'Installations de la ville de Montréal', installations: data.listOfArrondissements, test: result});
                         }
                     });
+                    // res.render('index', { title: 'Installations de la ville de Montréal', installlations: data});
                 }
             });
         }

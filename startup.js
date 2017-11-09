@@ -50,7 +50,13 @@ var startUpTasks = function(callback){
                             return callback(err);
                         }else{
                             console.log("Data updated!\n");
-                            return callback(null);
+                            updateListOfArrondissements(function(err){
+                                if(err){
+                                    return callback(err);
+                                }else{
+                                    return callback(null);
+                                }
+                            });
                         }
                     })
                 }
@@ -58,6 +64,43 @@ var startUpTasks = function(callback){
         }
     });
 }
+
+var updateListOfArrondissements = function(callback){
+    db.getConnection(function(err, db){
+        db.collection(config.collection, function (err, collection) {
+            if (err) {
+                return callback(err);
+            } else {
+                collection.distinct('nom', {"nom" : {$ne : null}}, function(err, arrondissements){
+                    if (err) {
+                        return callback(err);
+                    } else {
+                        data.listOfArrondissements = arrondissements;
+                        return callback(null);
+                    }
+                });
+            }
+        });
+    });
+}
+
+// var getArrondissements = function(err, res){
+//     db.getConnection(function(err, db){
+//         db.collection(config.collection, function (err, collection) {
+//             if (err) {
+//                 return callback(err);
+//             } else {
+//                 collection.find().toArray(function (err, arrondissements) {
+//                     if (err) {
+//                         return callback(err);
+//                     } else {
+//                         return callback(null, arrondissements);
+//                     }
+//                 });
+//             }
+//         });
+//     });
+// }
 
 module.exports.startUpTasks = startUpTasks;
 module.exports.updateDatabase = updateDatabase;

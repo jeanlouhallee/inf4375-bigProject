@@ -22,7 +22,8 @@ var xml2js = require('xml2js').parseString;
 var listOfAquaticInstallations;
 var listOfRinks;
 var listOfWinterSlides;
-var dict = [];
+var listOfArrondissements;
+
 
 var GetDataFromMontrealCityAPI = function(db, callback){
     var allData = []    ;
