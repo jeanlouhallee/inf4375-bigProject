@@ -20,14 +20,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cron = require('node-cron');
+var startup = require('./startup');
 var index = require('./routes/index');
 var doc = require('./routes/doc');
 var installations = require('./routes/installations');
-var mongo = require('mongodb');
-var config = require('./config');
-var data = require('./models/data');
-var db = require('./models/database');
-var cron = require('node-cron');
 
 var app = express();
 // view engine setup
@@ -42,54 +39,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var updateDatabase = function(callback){
-    db.getConnection(function(err, res){
-        if(err){
-            return callback(err);
-        }else{
-            data.GetDataFromMontrealCityAPI(res, function(err, res){
-                if(err){
-                    return callback(err);
-                }
-                return callback(null);
-            });
-        }
-    });
-}
+
 var task = cron.schedule('0 0 * * *', function(){
-    updateDatabase(function(err){
+    startup.dateDatabase(function(err){
         if(err){
             console.log("Something went terribly wrong...\n\n\n", err);
         }
     });
 }, false);
 
-var startUpTasks = function(callback){
-    db.getConnection(function(err, db){
-        if(err){
-            return callback(err);
-        }else{
-            db.dropDatabase(function(err, res){
-                if(err){
-                    err.myMessage = "Can't drop database.";
-                    return callback(err);
-                }else{
-                    console.log("Database dropped!\n");
-                    updateDatabase(function(err){
-                        if(err){
-                            return callback(err);
-                        }else{
-                            console.log("Data updated!\n");
-                            return callback(null);
-                        }
-                    })
-                }
-            });
-        }
-    });
-}
-
-startUpTasks(function(err){
+startup.startUpTasks(function(err){
     if(err){
         console.log(err);
     }
