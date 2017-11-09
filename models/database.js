@@ -25,4 +25,3 @@ var getConnection = function(callback){
 };
 
 module.exports.getConnection = getConnection;
-module.exports.getDataFromCollection = getDataFromCollection;

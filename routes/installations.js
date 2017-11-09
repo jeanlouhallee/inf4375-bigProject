@@ -6,22 +6,23 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
-            res.render('error', {error: err});
+            res.render('500');
         }else{
             let query;
             if(req.query.arrondissement){
                 query = {"arrondisse": req.query.arrondissement};
             }
-            db.collection(config.collection).find(query).toArray(function(err, result){
+            db.collection(config.collection).find(query).toArray(function(err, data){
                 if(err){
-                    res.render('error', {error: err});
+                    res.render('500');
                 }else{
-                    let data = JSON.stringify(result, null, 2);
-                    if(query){
-                        //res.json(result);
-                        res.render('installations', { title: 'Installations', installations: data});
+                    //let data = JSON.stringify(result, null, 2);
+                        if(query){
+                        res.json(data);
+                        //res.render('installations', { title: 'Installations', installations: data});
                     }else{
-                        res.render('installations', { title: 'Installations', installations: data});
+                        res.json(data)
+                        //res.render('installations', { title: 'Installations', installations: data});
                     }
                 }
             });

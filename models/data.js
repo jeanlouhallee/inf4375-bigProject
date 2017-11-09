@@ -16,7 +16,7 @@ var GetDataFromMontrealCityAPI = function(db, callback){
             return callback(err);
         }else{
 
-            listOfAquaticInstallations = csvToJSON(data);
+            listOfAquaticInstallations = renameProperty(csvToJSON(data));
             allData.push(listOfAquaticInstallations);
             request.get(config.listOfRinksUrl, function(err, res, data){
                 if(err){
@@ -30,7 +30,7 @@ var GetDataFromMontrealCityAPI = function(db, callback){
                             return callback(err);
                         }else{
 
-                            listOfRinks = result.patinoires.patinoire;
+                            listOfRinks = flattenSlidesAndRinks(result.patinoires.patinoire);
                             allData.push(listOfRinks);
                             request.get(config.listOfWinterSlidesUrl, function(err, res, data){
                                 if(err){
@@ -44,7 +44,7 @@ var GetDataFromMontrealCityAPI = function(db, callback){
                                             return callback(err);
                                         }else{
 
-                                            listOfWinterSlides = result.glissades.glissade;
+                                            listOfWinterSlides = flattenSlidesAndRinks(result.glissades.glissade);
                                             allData.push(listOfWinterSlides);
                                             dataToSave = [].concat.apply([], allData);
                                             sendDataToCollection(db, config.collection, dataToSave, function(err){
@@ -67,81 +67,24 @@ var GetDataFromMontrealCityAPI = function(db, callback){
     });
 }
 
-//NON UTILISÉ
-var GetDataFromMontrealCityAPI2 = function(db, callback){
-    request.get(config.listOfAquaticInstallationsUrl, function(err, res, data){
-        if(err){
-            err.myMessage = "Web request failed.";
-            return callback(err);
-        }else{
-
-            listOfAquaticInstallations = csvToJSON(data);
-            request.get(config.listOfRinksUrl, function(err, res, data){
-                if(err){
-                    err.myMessage = "Web request failed.";
-                    return callback(err);
-                }else{
-
-                    xml2js(data, {explicitArray:false, ignoreAttrs:true}, function(err, result){
-                        if(err){
-                            err.myMessage = "Can't parse xml.";
-                            return callback(err);
-                        }else{
-
-                            listOfRinks = result.patinoires.patinoire;
-                            request.get(config.listOfWinterSlidesUrl, function(err, res, data){
-                                if(err){
-                                    err.myMessage = "Web request failed.";
-                                    return callback(err);
-                                }else{
-
-                                    xml2js(data, {explicitArray:false, ignoreAttrs:true}, function(err, result){
-                                        if(err){
-                                            err.myMessage = "Can't parse xml.";
-                                            return callback(err);
-                                        }else{
-
-                                            listOfWinterSlides = result.glissades.glissade;
-                                            sendAllDataToCollection(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, function(err){
-                                                if(err){
-                                                    err.myMessage = "Can't send data to collection.";
-                                                    return callback(err);
-                                                }else{
-                                                    return callback(null);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
+var renameProperty = function(data){
+    data.forEach(function(d){
+        d.arrondissement = d.arrondisse;
+        delete d.arrondisse;
     });
+    return data;
 }
 
-//NON UTILISÉE
-var sendAllDataToCollection = function(db, listOfAquaticInstallations, listOfRinks, listOfWinterSlides, callback){
-    sendDataToCollection(db, config.aquaticInstallationsDb, listOfAquaticInstallations, function(err, result){
-        if(err){
-            return callback(err);
-        }else{
-            sendDataToCollection(db, config.rinksDb, listOfRinks, function(err, result){
-                if(err){
-                    return callback(err);
-                }else{
-                    sendDataToCollection(db, config.winterSlidesDb, listOfWinterSlides, function(err, result){
-                        if(err){
-                            return callback(err);
-                        }
-                        return callback(null);
-                    });
-                }
-            });
-        }
+var flattenSlidesAndRinks = function(data){
+    // let arrondissement = data.arrondissement.nom_arr;
+    // let cle = data.arrondissement.cle;
+    // let maj = data.arrondissement.date_maj;
+    data.forEach(function(d){
+        d.cle = d.arrondissement.cle;
+        d.date_maj = d.arrondissement.date_maj;
+        d.arrondissement = d.arrondissement.nom_arr;
     });
+    return data;
 }
 
 var sendDataToCollection = function(db, collection, data, callback){
