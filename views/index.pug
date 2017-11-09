@@ -23,14 +23,19 @@ block content
                 lu
                     li
                         label(for='arrondissement') Par arrondissement
-                        input.form-control(type='text' placeholder='Arrondissement')
+                        input.form-control(type='search' placeholder='Arrondissement')
                     li
                         button.btn.btn-primary(type='submit') Submit
                     li 
                         label(for='nom') Par nom d'installation
                         select
-                            each installlation in installlations
-                                option(value=installlation) #{installlation}
+                            each installation in installations
+                                option(value=installation) #{installation}
                     li
                         button.btn.btn-primary(type='submit') Submit
-        
+        div.table-content
+            table
+                each item in test
+                    tr 
+                        td Nom
+                        td #{test.nom}

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 var express = require('express');
 var database = require('../models/database');
 var config = require('../config');
 var router = express.Router();
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
@@ -33,14 +32,26 @@ router.get('/', function(req, res, next) {
                         if(err){
                             res.render('500');
                         }else{
-                            console.log(data);
-                            res.render('index', { title: 'Installations de la ville de Montréal', installlations: data});
+                            collection.find({"nom":"Parc Goulet"}, function(err, result){
+                                if(err){
+                                    res.render('500');
+                                }else{
+                                    console.log(result);
+                                    // obj = JSON.parse(result);
+                                    res.render('index', { title: 'Installations de la ville de Montréal', installations: data, test: result});
+                                }
+                            });
+                            // res.render('index', { title: 'Installations de la ville de Montréal', installlations: data});
                         }
                     });
                 }
             });
         }
     });
+});
+
+router.post('/',function(req, res, next){
+    console.log(req.body.search);
 });
 
 module.exports = router;

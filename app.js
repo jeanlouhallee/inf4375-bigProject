@@ -89,13 +89,13 @@ var startUpTasks = function(callback){
     });
 }
 
-// startUpTasks(function(err){
-//     if(err){
-//         console.log(err);
-//     }
-// });
-//
-// task.start();
+startUpTasks(function(err){
+    if(err){
+        console.log(err);
+    }
+});
+
+task.start();
 
 app.use('/', index);
 app.use('/doc', doc);

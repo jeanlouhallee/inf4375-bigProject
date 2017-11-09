@@ -92,9 +92,6 @@ var renameProperty = function(data){
 }
 
 var flattenSlidesAndRinks = function(data){
-    // let arrondissement = data.arrondissement.nom_arr;
-    // let cle = data.arrondissement.cle;
-    // let maj = data.arrondissement.date_maj;
     data.forEach(function(d){
         d.cle = d.arrondissement.cle;
         d.date_maj = d.arrondissement.date_maj;

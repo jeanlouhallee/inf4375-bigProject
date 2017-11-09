@@ -19,7 +19,6 @@ var config = require('../config.js');
 
 var dbInstance;
 
-//Pris dans les notes de Jacques Berger
 var getConnection = function(callback){
   if (dbInstance) {
       return callback(null, dbInstance);
