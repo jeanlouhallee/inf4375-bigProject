@@ -24,23 +24,12 @@ router.get('/', function(req, res, next) {
         if(err){
             res.render('500');
         }else{
-            let query;
-            if(req.query.arrondissement){
-                // console.log(req.query);
-                query = {"arrondissement": req.query.arrondissement};
-            }
+            console.log(req.query);
             db.collection(config.collection).find(req.query).toArray(function(err, data){
                 if(err){
                     res.render('500');
                 }else{
-                    //let data = JSON.stringify(result, null, 2);
-                        if(query){
-                        res.json(data);
-                        //res.render('installations', { title: 'Installations', installations: data});
-                    }else{
-                        res.json(data)
-                        //res.render('installations', { title: 'Installations', installations: data});
-                    }
+                    res.json(data)
                 }
             });
         }
