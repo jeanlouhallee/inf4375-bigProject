@@ -26,9 +26,10 @@ router.get('/', function(req, res, next) {
         }else{
             let query;
             if(req.query.arrondissement){
-                query = {"arrondisse": req.query.arrondissement};
+                // console.log(req.query);
+                query = {"arrondissement": req.query.arrondissement};
             }
-            db.collection(config.collection).find(query).toArray(function(err, data){
+            db.collection(config.collection).find(req.query).toArray(function(err, data){
                 if(err){
                     res.render('500');
                 }else{

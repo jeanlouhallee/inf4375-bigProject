@@ -26,7 +26,7 @@ var listOfArrondissements;
 
 
 var GetDataFromMontrealCityAPI = function(db, callback){
-    var allData = []    ;
+    var allData = [];
     request.get(config.listOfAquaticInstallationsUrl, function(err, res, data){
         if(err){
             err.myMessage = "Web request failed.";
@@ -84,23 +84,6 @@ var GetDataFromMontrealCityAPI = function(db, callback){
     });
 }
 
-var renameProperty = function(data){
-    data.forEach(function(d){
-        d.arrondissement = d.arrondisse;
-        delete d.arrondisse;
-    });
-    return data;
-}
-
-var flattenSlidesAndRinks = function(data){
-    data.forEach(function(d){
-        d.cle = d.arrondissement.cle;
-        d.date_maj = d.arrondissement.date_maj;
-        d.arrondissement = d.arrondissement.nom_arr;
-    });
-    return data;
-}
-
 var sendDataToCollection = function(db, collection, data, callback){
     db.collection(collection, function (err, collection) {
         if (err) {
@@ -138,6 +121,23 @@ var csvToJSON = function(csv){
 	  result.push(obj);
   }
   return result;
+}
+
+var renameProperty = function(data){
+    data.forEach(function(d){
+        d.arrondissement = d.arrondisse;
+        delete d.arrondisse;
+    });
+    return data;
+}
+
+var flattenSlidesAndRinks = function(data){
+    data.forEach(function(d){
+        d.cle = d.arrondissement.cle;
+        d.date_maj = d.arrondissement.date_maj;
+        d.arrondissement = d.arrondissement.nom_arr;
+    });
+    return data;
 }
 
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;

@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
                         if(err){
                             res.render('500');
                         }else{
-                            console.log(result);
+                            // console.log(result);
                             // obj = JSON.parse(result);
                             res.render('index', { title: 'Installations de la ville de Montréal', installations: data.listOfArrondissements, test: result});
                         }
