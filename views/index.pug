@@ -15,23 +15,33 @@
 extends layout
 
 block content
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+    script(src="javascripts/test.js")
     div.content
         h1= title
         div.form-content
             h2 Recherche
-            form(method='POST' action='')
+            form(method='GET' action='' id='form-arrondissement')
                 lu
                     li
                         label(for='arrondissement') Par arrondissement
-                        input.form-control(type='search' placeholder='Arrondissement')
+                        input.form-control(type='search' id="field-arrondissement" placeholder='Arrondissement')
                     li
-                        button.btn.btn-primary(type='submit') Submit
+                        button.btn.btn-primary(id='submitArrondissement') Submit
+            form(method='GET' action='' id="form-nom")
                     li 
                         label(for='nom') Par nom d'installation
                         select
                             each installation in installations
-                                option(value=installation) #{installation}
+                                option(value=installation  id='field-nom') #{installation}
                     li
-                        button.btn.btn-primary(type='submit') Submit
+                        button.btn.btn-primary(id='submitNom') Submit
         div.table-content
             table
+                thead
+                    th Nom
+                    th Adresse
+                    th Arrondissement
+                    th Type
+                tbody(id='myTable')
+                    
