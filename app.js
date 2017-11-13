@@ -21,7 +21,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cron = require('node-cron');
-var startup = require('./startup');
+var tasks = require('./tasks');
 var index = require('./routes/index');
 var doc = require('./routes/doc');
 var installations = require('./routes/installations');
@@ -41,14 +41,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 ///A MODIFIER POUR LA LSITE D'ARRONDISSEMENTS
 var task = cron.schedule('0 0 * * *', function(){
-    startup.updateDatabase(function(err){
+    tasks.refreshDatabase(function(err){
         if(err){
             console.log("Something went terribly wrong...\n\n\n", err);
         }
     });
 }, false);
 
-startup.startUpTasks(function(err){
+tasks.startUpTasks(function(err){
     if(err){
         console.log(err);
     }

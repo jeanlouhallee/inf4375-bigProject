@@ -20,12 +20,17 @@ var config = require('../config');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
+    let sorting;
     database.getConnection(function(err, db){
         if(err){
             res.render('500');
         }else{
             console.log(req.query);
-            db.collection(config.collection).find(req.query).toArray(function(err, data){
+            if(req.query.condition){
+                sorting = { nom: 1};
+                console.log("Lets sort!");
+            }
+            db.collection(config.collection).find(req.query).sort(sorting).toArray(function(err, data){
                 if(err){
                     res.render('500');
                 }else{

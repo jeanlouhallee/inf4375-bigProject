@@ -19,7 +19,7 @@ var config = require('./config');
 var data = require('./models/data');
 var db = require('./models/database');
 
-var updateDatabase = function(callback){
+var refreshDatabase = function(callback){
     db.getConnection(function(err, res){
         if(err){
             return callback(err);
@@ -45,7 +45,7 @@ var startUpTasks = function(callback){
                     return callback(err);
                 }else{
                     console.log("Database dropped!\n");
-                    updateDatabase(function(err){
+                    refreshDatabase(function(err){
                         if(err){
                             return callback(err);
                         }else{
@@ -103,4 +103,4 @@ var updateListOfArrondissements = function(callback){
 // }
 
 module.exports.startUpTasks = startUpTasks;
-module.exports.updateDatabase = updateDatabase;
+module.exports.refreshDatabase = refreshDatabase;
