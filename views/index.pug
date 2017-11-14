@@ -31,17 +31,19 @@ block content
             form(method='GET' action='' id="form-nom")
                     li 
                         label(for='nom') Par nom d'installation
-                        select
+                        select(id='installations')
                             each installation in installations
                                 option(value=installation  id='field-nom') #{installation}
                     li
                         button.btn.btn-primary(id='submitNom') Submit
         div.table-content
-            table
+            table(id="myTable")
                 thead
-                    th Nom
-                    th Adresse
-                    th Arrondissement
-                    th Type
-                tbody(id='myTable')
+                    tr
+                    tr
+                        th Nom
+                        th Adresse
+                        th Arrondissement
+                        th Type
+                tbody(id='table-content')
                     
