@@ -28,7 +28,6 @@ router.get('/', function(req, res, next) {
             console.log(req.query);
             if(req.query.condition){
                 sorting = { nom: 1};
-                console.log("Lets sort!");
             }
             db.collection(config.collection).find(req.query).sort(sorting).toArray(function(err, data){
                 if(err){

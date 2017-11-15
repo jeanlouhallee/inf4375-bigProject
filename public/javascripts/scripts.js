@@ -31,7 +31,9 @@ $(document).ready(function() {
                           +"<td>"+data[0].nom+"</td>"
                           +"<td>"+data[0].adresse+"</td>"
                           +"<td>"+data[0].arrondissement+"</td>"
-                          +"<td>"+data[0].type+"</td>"+"</tr>")
+                          +"<td>"+data[0].type+"</td>"
+                          +"<td>"+data[0].condition+"</td>"
+                          +"</tr>")
         });
     });
 });
