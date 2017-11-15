@@ -62,9 +62,9 @@ app.use('/installations', installations);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
@@ -77,8 +77,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   if(err.status === 404){
       res.render('404');
-  }else if (err.status === 500) {
-      res.render('error');
+  }else if (err.status === 403) {
+      res.render('403');
+  } else if (err.status === 400) {
+      res.render('400');
+  } else {
+      res.render('500');
   }
 });
 

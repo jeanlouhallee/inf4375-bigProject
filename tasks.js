@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-var mongo = require('mongodb');
 var config = require('./config');
 var data = require('./models/data');
 var db = require('./models/database');
