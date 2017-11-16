@@ -35,9 +35,11 @@ router.get('/', function(req, res, next) {
                     err.status = 500;
                     next(err);
                 }else{
-                    if(data.listOfArrondissements){
-                        res.render('index', { title: 'Installations de la ville de Montréal', installations: data.listOfArrondissements});
+                    if(data.getListOfArrondissement()){
+                        console.log(data.listOfArrondissements);
+                        res.render('index', { title: 'Installations de la ville de Montréal', installations: data.getListOfArrondissement()});
                     }else{
+                        console.log(data.listOfArrondissements);
                         err.status = 500;
                         next(err);
                     }
@@ -47,7 +49,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.put('/installations/:id', function(req, res) {
+router.put('/installations/:nom', function(req, res) {
   var result = jsonschema.validate(req.body, schemas.updateCondition);
   if (result.errors.length > 0) {
     res.status(400).json(result);
@@ -57,10 +59,7 @@ router.put('/installations/:id', function(req, res) {
         if (err) {
           res.sendStatus(500);
         } else {
-        //   if (req.body.date_naissance) {
-        //     req.body.date_naissance = new Date(req.body.date_naissance);
-        //   }
-          collection.update( {nom: req.params.id}, {$set : {condition : req.body.condition} }, function(err, result) {
+          collection.update( {nom: req.params.nom}, {$set : {condition : req.body.condition} }, function(err, result) {
             if (err) {
               res.sendStatus(500);
             } else if (result.result.n === 0) {
@@ -73,6 +72,27 @@ router.put('/installations/:id', function(req, res) {
       });
     });
   }
+});
+
+router.delete('/installations/:nom', function(req, res) {
+  database.getConnection(function(err, db){
+    db.collection(config.collection, function (err, collection) {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        collection.remove({nom: req.params.nom}, function(err, result) {
+          if (err) {
+            res.sendStatus(500);
+          } else if (result.result.n === 0) {
+            res.sendStatus(404);
+          } else {
+            data.removeArrondissementFromList(req.params.nom);
+            res.sendStatus(200);
+          }
+        });
+      }
+    });
+  });
 });
 
 module.exports = router;

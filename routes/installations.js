@@ -25,11 +25,24 @@ router.get('/', function(req, res, next) {
         if(err){
             res.render('500');
         }else{
-            console.log(req.query);
-            if(req.query.condition){
-                sorting = { nom: 1};
-            }
-            db.collection(config.collection).find(req.query).sort(sorting).toArray(function(err, data){
+            db.collection(config.collection).find(req.query).toArray(function(err, data){
+                if(err){
+                    res.render('500');
+                }else{
+                    res.json(data)
+                }
+            });
+        }
+    });
+});
+
+router.get('/mauvaise_condition', function(req, res, next) {
+    let sorting;
+    database.getConnection(function(err, db){
+        if(err){
+            res.render('500');
+        }else{
+            db.collection(config.collection).find({condition: "Mauvaise"}).sort({ nom: 1}).toArray(function(err, data){
                 if(err){
                     res.render('500');
                 }else{

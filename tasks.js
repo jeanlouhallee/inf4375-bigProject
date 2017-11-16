@@ -74,7 +74,7 @@ var updateListOfArrondissements = function(callback){
                     if (err) {
                         return callback(err);
                     } else {
-                        data.listOfArrondissements = arrondissements;
+                        data.setListOfArronfissement(arrondissements);
                         return callback(null);
                     }
                 });

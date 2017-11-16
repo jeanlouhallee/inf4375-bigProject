@@ -103,4 +103,22 @@ var sendDataToCollection = function(db, collection, data, callback){
     });
 }
 
+var getListOfArrondissement = function(){
+    return listOfArrondissements;
+}
+
+var setListOfArronfissement = function(data){
+    listOfArrondissements = data;
+}
+
+var removeArrondissementFromList = function(arrondissement){
+    var index = listOfArrondissements.indexOf(arrondissement);
+    if(index !== -1){
+        listOfArrondissements.splice(index, 1);
+    }
+}
+
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
+module.exports.getListOfArrondissement = getListOfArrondissement;
+module.exports.setListOfArronfissement = setListOfArronfissement;
+module.exports.removeArrondissementFromList = removeArrondissementFromList;
