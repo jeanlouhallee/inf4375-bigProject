@@ -20,8 +20,6 @@ var database = require('../models/database');
 var config = require('../config');
 var data = require('../models/data');
 var schemas = require('./schemas/schemas');
-
-
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -36,10 +34,8 @@ router.get('/', function(req, res, next) {
                     next(err);
                 }else{
                     if(data.getListOfArrondissement()){
-                        console.log(data.listOfArrondissements);
                         res.render('index', { title: 'Installations de la ville de Montréal', installations: data.getListOfArrondissement()});
                     }else{
-                        console.log(data.listOfArrondissements);
                         err.status = 500;
                         next(err);
                     }

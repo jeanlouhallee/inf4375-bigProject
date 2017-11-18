@@ -15,40 +15,36 @@
 extends layout
 
 block content
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
-    script(src="javascripts/scripts.js")
-    div.content
-        h1= title
-        div.form-content
-            h2 Recherche
-            form(method='GET' action='' id='form-arrondissement')
-                lu
-                    li
+    div(class="container-fluid")
+        div(class="row")
+            div(class="col-sm-3")
+                h2 Recherche
+                form(method='GET' action='' id='form-arrondissement')
+                    div(class="form-group" class="col-form-label")
                         label(for='arrondissement') Par arrondissement
-                        input.form-control(type='search' id="field-arrondissement" placeholder='Arrondissement')
-                    li
-                        button.btn.btn-primary(id='submitArrondissement') Submit
-            form(method='GET' action='' id="form-nom")
-                    li 
+                        input(type='text' class="form-control" id="field-arrondissement" placeholder='Arrondissement')
+                        button(id='submitArrondissement' class="btn btn-primary") Submit
+                form(method='GET' action='' id="form-nom")
+                    div(class="form-group")
                         label(for='nom') Par nom d'installation
-                        select(id='installations')
+                        select(class='selectpicker' id='installations')
                             each installation in installations
                                 option(value=installation  id='field-nom') #{installation}
-                    li
-                        button.btn.btn-primary(id='submitNom') Submit
-        div.table-content
-            table(id="myTable")
-                thead
-                    tr
-                    tr
-                        th Nom
-                        th Adresse
-                        th Arrondissement
-                        th Type
-                        th Condition
-                tbody(id='table-content')
-                        td Nothing to show here...
-                        td
-                        td
-                        td
-                        td
+                        button(id='submitNom' class="btn btn-primary") Submit
+            div(class="col-sm-8")
+                div(class="container")
+                    table(id="myTable" class="table")
+                        thead
+                            tr
+                            tr
+                                th Nom
+                                th Adresse
+                                th Arrondissement
+                                th Type
+                                th Condition
+                        tbody(id='table-content')
+                                td Nothing to show here...
+                                td
+                                td
+                                td
+                                td

@@ -57,7 +57,7 @@ var startUpTasks = function(callback){
                                 }
                             });
                         }
-                    })
+                    });
                 }
             });
         }

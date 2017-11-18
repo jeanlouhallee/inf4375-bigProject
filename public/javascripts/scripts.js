@@ -7,11 +7,13 @@ $(document).ready(function() {
         $.getJSON(url, function(data, status){
             var items = [];
             $.each(data, function(err, line){
-                items.push("<tr>"
+                items.push("<tr onclick=\"document.getElementById('test').style.display='block'\">"
                               +"<td>"+line.nom+"</td>"
                               +"<td>"+line.adresse+"</td>"
                               +"<td>"+line.arrondissement+"</td>"
-                              +"<td>"+line.type+"</td>"+"</tr>");
+                              +"<td>"+line.type+"</td>"
+                              +"<td>"+line.condition+"</td>"
+                              +"</tr>");
             });
             var html = items.join("");
             $( '#table-content' ).append(html)
