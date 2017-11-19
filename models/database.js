@@ -15,7 +15,7 @@
  */
 
 var mongodb = require('mongodb');
-var config = require('../config.js');
+var config = require('../config/config.js');
 
 var dbInstance;
 

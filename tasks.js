@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-var config = require('./config');
+var config = require('./config/config');
 var data = require('./models/data');
 var db = require('./models/database');
 
@@ -49,7 +49,7 @@ var startUpTasks = function(callback){
                             return callback(err);
                         }else{
                             console.log("Data updated!\n");
-                            updateListOfArrondissements(function(err){
+                            updateListOfInstallations(function(err){
                                 if(err){
                                     return callback(err);
                                 }else{
@@ -64,17 +64,17 @@ var startUpTasks = function(callback){
     });
 }
 
-var updateListOfArrondissements = function(callback){
+var updateListOfInstallations = function(callback){
     db.getConnection(function(err, db){
         db.collection(config.collection, function (err, collection) {
             if (err) {
                 return callback(err);
             } else {
-                db.collection(config.collection).find({}, {nom: 1}).toArray(function(err, arrondissements){
+                db.collection(config.collection).find( {"nom" : {$ne : null}}, {nom: 1}).toArray(function(err, installations){
                     if (err) {
                         return callback(err);
                     } else {
-                        data.setListOfArronfissement(arrondissements);
+                        data.setListOfInstallations(installations);
                         return callback(null);
                     }
                 });

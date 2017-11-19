@@ -15,7 +15,7 @@
  */
 
 var request = require('request');
-var config = require('../config.js');
+var config = require('../config/config.js');
 var toolbox = require('./toolbox');
 var fs = require('fs');
 var xml2js = require('xml2js').parseString;
@@ -23,7 +23,7 @@ var xml2js = require('xml2js').parseString;
 var listOfAquaticInstallations;
 var listOfRinks;
 var listOfWinterSlides;
-var listOfArrondissements;
+var listOfInstallations = {};
 
 
 var GetDataFromMontrealCityAPI = function(db, callback){
@@ -88,12 +88,10 @@ var GetDataFromMontrealCityAPI = function(db, callback){
 var sendDataToCollection = function(db, collection, data, callback){
     db.collection(collection, function (err, collection) {
         if (err) {
-            console.log("Erreur avec la base de données...");
             return callback(err);
         } else {
             collection.insert(data, function (err, result) {
                 if (err) {
-                    console.log("Erreur lors de l'insertion...");
                     return callback(err);
                 }else{
                     return callback(null, result);
@@ -103,22 +101,21 @@ var sendDataToCollection = function(db, collection, data, callback){
     });
 }
 
-var getListOfArrondissement = function(){
-    return listOfArrondissements;
+var getListOfInstallations = function(){
+    return listOfInstallations;
 }
 
-var setListOfArronfissement = function(data){
-    listOfArrondissements = data;
+var setListOfInstallations = function(data){
+    data.forEach(function(installation){
+        listOfInstallations[installation._id] = installation.nom;
+    });
 }
 
-var removeArrondissementFromList = function(arrondissement){
-    var index = listOfArrondissements.indexOf(arrondissement);
-    if(index !== -1){
-        listOfArrondissements.splice(index, 1);
-    }
+var removeInstallationFromList = function(installationId){
+    delete listOfInstallations[installationId];
 }
 
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
-module.exports.getListOfArrondissement = getListOfArrondissement;
-module.exports.setListOfArronfissement = setListOfArronfissement;
-module.exports.removeArrondissementFromList = removeArrondissementFromList;
+module.exports.getListOfInstallations = getListOfInstallations;
+module.exports.setListOfInstallations = setListOfInstallations;
+module.exports.removeInstallationFromList = removeInstallationFromList;

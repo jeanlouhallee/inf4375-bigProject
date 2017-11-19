@@ -18,7 +18,7 @@ var express = require('express');
 var raml2html = require('raml2html');
 var router = express.Router();
 var configWithDefaultTheme = raml2html.getConfigForTheme();
-/* GET users listing. */
+
 router.get('/', function(req, res, next) {
      var onError = function (err) {
        console.log(err);
