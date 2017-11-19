@@ -82,6 +82,7 @@ app.use(function(err, req, res, next) {
   } else if (err.status === 400) {
       res.render('400');
   } else {
+      console.log(err);
       res.render('500', {error: err});
   }
 });

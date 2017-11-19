@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-var mongodb = require("mongodb");
+var mongodb = require('mongodb');
 var config = require('../config.js');
 
 var dbInstance;

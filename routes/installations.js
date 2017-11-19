@@ -15,8 +15,10 @@
  */
 
 var express = require('express');
+var mongodb = require('mongodb');
 var database = require('../models/database');
 var config = require('../config');
+var data = require('../models/data');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -52,5 +54,68 @@ router.get('/mauvaise_condition', function(req, res, next) {
         }
     });
 });
+
+router.get('/:id', function(req, res, next) {
+    database.getConnection(function(err, db){
+        if(err){
+            res.sendStatus(500);
+        }else{
+            db.collection(config.collection).find({_id: new mongodb.ObjectId(req.params.id)}).toArray(function(err, data){
+                if(err){
+                    res.sendStatus(500);
+                }else{
+                    res.json(data)
+                }
+            });
+        }
+    });
+});
+
+router.put('/:id', function(req, res) {
+  var result = jsonschema.validate(req.body, schemas.updateCondition);
+  if (result.errors.length > 0) {
+    res.status(400).json(result);
+  } else {
+    database.getConnection(function(err, db){
+      db.collection(config.collection, function (err, collection) {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+          collection.update({_id: new mongodb.ObjectId(req.params.id)}, {$set : {condition : req.body.condition} }, function(err, result) {
+            if (err) {
+              res.sendStatus(500);
+            } else if (result.result.n === 0) {
+              res.sendStatus(404);
+            } else {
+              res.sendStatus(200);
+            }
+          });
+        }
+      });
+    });
+  }
+});
+
+router.delete('/:id', function(req, res) {
+  database.getConnection(function(err, db){
+    db.collection(config.collection, function (err, collection) {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        collection.remove({_id: new mongodb.ObjectId(req.params.id)}, function(err, result) {
+          if (err) {
+            res.sendStatus(500);
+          } else if (result.result.n === 0) {
+            res.sendStatus(404);
+          } else {
+            data.removeArrondissementFromList(req.params.nom);
+            res.sendStatus(200);
+          }
+        });
+      }
+    });
+  });
+});
+
 
 module.exports = router;

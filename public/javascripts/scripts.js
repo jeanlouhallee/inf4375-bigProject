@@ -1,3 +1,17 @@
+//- Copyright 2017 Jean-Lou Hallée.
+//-
+//- Licensed under the Apache License, Version 2.0 (the "License");
+//- you may not use this file except in compliance with the License.
+//- You may obtain a copy of the License at
+//-
+//-      http://www.apache.org/licenses/LICENSE-2.0
+//-
+//- Unless required by applicable law or agreed to in writing, software
+//- distributed under the License is distributed on an "AS IS" BASIS,
+//- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//- See the License for the specific language governing permissions and
+//- limitations under the License.
+
 $(document).ready(function() {
     $( '#submitArrondissement' ).click(function(btn) {
         btn.preventDefault();
@@ -7,7 +21,7 @@ $(document).ready(function() {
         $.getJSON(url, function(data, status){
             var items = [];
             $.each(data, function(err, line){
-                items.push("<tr onclick=\"document.getElementById('test').style.display='block'\">"
+                items.push("<tr>"
                               +"<td>"+line.nom+"</td>"
                               +"<td>"+line.adresse+"</td>"
                               +"<td>"+line.arrondissement+"</td>"
@@ -28,14 +42,18 @@ $(document).ready(function() {
         var nom = $( '#installations option:selected').val();
         var url = "http://localhost:3000/installations?nom=" + nom;
         $.getJSON(url, function(data, status){
-            console.log(data);
-            $( '#table-content' ).append("<tr>"
-                          +"<td>"+data[0].nom+"</td>"
-                          +"<td>"+data[0].adresse+"</td>"
-                          +"<td>"+data[0].arrondissement+"</td>"
-                          +"<td>"+data[0].type+"</td>"
-                          +"<td>"+data[0].condition+"</td>"
-                          +"</tr>")
+            var items = [];
+            $.each(data, function(err, line){
+                items.push("<tr>"
+                              +"<td>"+line.nom+"</td>"
+                              +"<td>"+line.adresse+"</td>"
+                              +"<td>"+line.arrondissement+"</td>"
+                              +"<td>"+line.type+"</td>"
+                              +"<td>"+line.condition+"</td>"
+                              +"</tr>");
+            });
+            var html = items.join("");
+            $( '#table-content' ).append(html)
         });
     });
 });
