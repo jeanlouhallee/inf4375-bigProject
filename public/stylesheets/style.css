@@ -1,12 +1,8 @@
 body {
     background-color: #F3F3F3;
 }
-div.col-sm-3 {
-    margin: 25px;
-}
-
-div.col-sm-8 {
-    margin: 25px;
+div.container-fluid {
+    margin: 25px !important;
 }
 
 button {

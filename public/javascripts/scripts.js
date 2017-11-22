@@ -15,22 +15,31 @@
 $(document).ready(function() {
     $( '#submitArrondissement' ).click(function(btn) {
         btn.preventDefault();
-        $('#table-content').empty();
+        $('#myTable').empty();
         var arrondissement = $( '#field-arrondissement' ).val();
         var url = "http://localhost:3000/installations?arrondissement=" + arrondissement;
         $.getJSON(url, function(data, status){
             var items = [];
+            items.push("<thead></tr><tr><th>"+"Id"+"</th>"
+                        + "<th>"+"Nom"+"</th>"
+                        + "<th>"+"Adresse"+"</th>"
+                        + "<th>"+"Arrondissement"+"</th>"
+                        + "<th>"+"Type"+"</th>"
+                        + "<th>"+"Condition"+"</th></tr></thead><tbody>");
             $.each(data, function(err, line){
                 items.push("<tr>"
-                              +"<td>"+line.nom+"</td>"
-                              +"<td>"+line.adresse+"</td>"
-                              +"<td>"+line.arrondissement+"</td>"
-                              +"<td>"+line.type+"</td>"
-                              +"<td>"+line.condition+"</td>"
-                              +"</tr>");
+                        +"<td>"+cleanOutput(line._id)+"</td>"
+                        +"<td>"+cleanOutput(line.nom)+"</td>"
+                        +"<td>"+cleanOutput(line.adresse)+"</td>"
+                        +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+                        +"<td>"+cleanOutput(line.type)+"</td>"
+                        +"<td>"+cleanOutput(line.condition)+"</td>"
+                        +"</tr>");
             });
+            items.push("</tbody>");
             var html = items.join("");
-            $( '#table-content' ).append(html)
+            $( '#myTable' ).append(html);
+            $('#myModal').modal('toggle');
         });
     });
 });
@@ -38,22 +47,38 @@ $(document).ready(function() {
 $(document).ready(function() {
     $( '#submitNom' ).click(function(btn) {
         btn.preventDefault();
-        $('#table-content').empty();
+        $('#myTable').empty();
         var nom = $( '#installations option:selected').val();
         var url = "http://localhost:3000/installations?nom=" + nom;
         $.getJSON(url, function(data, status){
             var items = [];
+            items.push("<thead></tr><tr><th>"+"Id"+"</th>"
+                        + "<th>"+"Nom"+"</th>"
+                        + "<th>"+"Adresse"+"</th>"
+                        + "<th>"+"Arrondissement"+"</th>"
+                        + "<th>"+"Type"+"</th>"
+                        + "<th>"+"Condition"+"</th></tr></thead><tbody>");
             $.each(data, function(err, line){
                 items.push("<tr>"
-                              +"<td>"+line.nom+"</td>"
-                              +"<td>"+line.adresse+"</td>"
-                              +"<td>"+line.arrondissement+"</td>"
-                              +"<td>"+line.type+"</td>"
-                              +"<td>"+line.condition+"</td>"
-                              +"</tr>");
+                            +"<td>"+cleanOutput(line._id)+"</td>"
+                            +"<td>"+cleanOutput(line.nom)+"</td>"
+                            +"<td>"+cleanOutput(line.adresse)+"</td>"
+                            +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+                            +"<td>"+cleanOutput(line.type)+"</td>"
+                            +"<td>"+cleanOutput(line.condition)+"</td>"
+                            +"</tr>");
             });
+            items.push("</tbody>");
             var html = items.join("");
-            $( '#table-content' ).append(html)
+            $( '#myTable' ).append(html);
+            $('#myModal').modal('toggle');
         });
     });
 });
+
+var cleanOutput = function(string){
+    if(!string){
+        return "N/A"
+    }
+    return string
+}
