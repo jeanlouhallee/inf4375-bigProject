@@ -39,8 +39,8 @@ $(document).ready(function() {
     $( '#submitNom' ).click(function(btn) {
         btn.preventDefault();
         $('#table-content').empty();
-        var id = $( '#installations option:selected').val();
-        var url = "http://localhost:3000/installations/" + id;
+        var nom = $( '#installations option:selected').val();
+        var url = "http://localhost:3000/installations?nom=" + nom;
         $.getJSON(url, function(data, status){
             var items = [];
             $.each(data, function(err, line){

@@ -49,13 +49,8 @@ var startUpTasks = function(callback){
                             return callback(err);
                         }else{
                             console.log("Data updated!\n");
-                            updateListOfInstallations(function(err){
-                                if(err){
-                                    return callback(err);
-                                }else{
-                                    return callback(null);
-                                }
-                            });
+                            return callback(null);
+
                         }
                     });
                 }
@@ -63,44 +58,6 @@ var startUpTasks = function(callback){
         }
     });
 }
-
-var updateListOfInstallations = function(callback){
-    db.getConnection(function(err, db){
-        db.collection(config.collection, function (err, collection) {
-            if (err) {
-                return callback(err);
-            } else {
-                db.collection(config.collection).find( {"nom" : {$ne : null}}, {nom: 1}).toArray(function(err, installations){
-                    if (err) {
-                        return callback(err);
-                    } else {
-                        data.setListOfInstallations(installations);
-                        return callback(null);
-                    }
-                });
-            }
-        });
-    });
-}
-
-// var updateListOfArrondissements = function(callback){
-//     db.getConnection(function(err, db){
-//         db.collection(config.collection, function (err, collection) {
-//             if (err) {
-//                 return callback(err);
-//             } else {
-//                 collection.distinct('nom', {"nom" : {$ne : null}}, function(err, arrondissements){
-//                     if (err) {
-//                         return callback(err);
-//                     } else {
-//                         data.setListOfArronfissement(arrondissements);
-//                         return callback(null);
-//                     }
-//                 });
-//             }
-//         });
-//     });
-// }
 
 module.exports.startUpTasks = startUpTasks;
 module.exports.refreshDatabase = refreshDatabase;

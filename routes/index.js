@@ -33,62 +33,18 @@ router.get('/', function(req, res, next) {
                     err.status = 500;
                     next(err);
                 }else{
-                    if(data.getListOfInstallations()){
-                        res.render('index', { title: 'Installations de la ville de Montréal', installations: data.getListOfInstallations()});
-                    }else{
-                        err.status = 500;
-                        next(err);
-                    }
+                    db.collection(config.collection).distinct("nom", {"nom" : {$ne: null}}, function(err, installations){
+                        if(err){
+                            err.status = 500;
+                            next(err);
+                        }else{
+                            res.render('index', { title: 'Installations de la ville de Montréal', installations: installations});
+                        }
+                    });
                 }
             });
         }
     });
 });
-
-// router.put('/installations/:nom', function(req, res) {
-//   var result = jsonschema.validate(req.body, schemas.updateCondition);
-//   if (result.errors.length > 0) {
-//     res.status(400).json(result);
-//   } else {
-//     database.getConnection(function(err, db){
-//       db.collection(config.collection, function (err, collection) {
-//         if (err) {
-//           res.sendStatus(500);
-//         } else {
-//           collection.update( {nom: req.params.nom}, {$set : {condition : req.body.condition} }, function(err, result) {
-//             if (err) {
-//               res.sendStatus(500);
-//             } else if (result.result.n === 0) {
-//               res.sendStatus(404);
-//             } else {
-//               res.sendStatus(200);
-//             }
-//           });
-//         }
-//       });
-//     });
-//   }
-// });
-//
-// router.delete('/installations/:nom', function(req, res) {
-//   database.getConnection(function(err, db){
-//     db.collection(config.collection, function (err, collection) {
-//       if (err) {
-//         res.sendStatus(500);
-//       } else {
-//         collection.remove({nom: req.params.nom}, function(err, result) {
-//           if (err) {
-//             res.sendStatus(500);
-//           } else if (result.result.n === 0) {
-//             res.sendStatus(404);
-//           } else {
-//             data.removeArrondissementFromList(req.params.nom);
-//             res.sendStatus(200);
-//           }
-//         });
-//       }
-//     });
-//   });
-// });
 
 module.exports = router;

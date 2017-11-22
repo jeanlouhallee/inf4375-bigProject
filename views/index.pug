@@ -28,8 +28,8 @@ block content
                     div(class="form-group")
                         label(for='nom') Par nom d'installation
                         select(id='installations')
-                            each value,key in installations
-                                option(value=key  id='field-nom') #{value}
+                            each installation in installations
+                                option(value=installation id='field-nom') #{installation}
                         button(id='submitNom' class="btn btn-primary") Submit
             div(class="col-sm-8")
                 div(class="container")

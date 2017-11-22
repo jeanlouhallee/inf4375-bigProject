@@ -23,8 +23,6 @@ var xml2js = require('xml2js').parseString;
 var listOfAquaticInstallations;
 var listOfRinks;
 var listOfWinterSlides;
-var listOfInstallations = {};
-
 
 var GetDataFromMontrealCityAPI = function(db, callback){
     var allData = [];
@@ -101,21 +99,4 @@ var sendDataToCollection = function(db, collection, data, callback){
     });
 }
 
-var getListOfInstallations = function(){
-    return listOfInstallations;
-}
-
-var setListOfInstallations = function(data){
-    data.forEach(function(installation){
-        listOfInstallations[installation._id] = installation.nom;
-    });
-}
-
-var removeInstallationFromList = function(installationId){
-    delete listOfInstallations[installationId];
-}
-
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
-module.exports.getListOfInstallations = getListOfInstallations;
-module.exports.setListOfInstallations = setListOfInstallations;
-module.exports.removeInstallationFromList = removeInstallationFromList;
