@@ -46,7 +46,7 @@ var GetDataFromMontrealCityAPI = function(db, callback){
                             return callback(err);
                         }else{
 
-                            listOfRinks = toolbox.flattenSlidesAndRinks(result.patinoires.patinoire);
+                            listOfRinks = toolbox.adjustData(result.patinoires.patinoire, "Patinoire");
                             allData.push(listOfRinks);
                             request.get(config.listOfWinterSlidesUrl, function(err, res, data){
                                 if(err){
@@ -60,7 +60,7 @@ var GetDataFromMontrealCityAPI = function(db, callback){
                                             return callback(err);
                                         }else{
 
-                                            listOfWinterSlides = toolbox.flattenSlidesAndRinks(result.glissades.glissade);
+                                            listOfWinterSlides = toolbox.adjustData(result.glissades.glissade, "Glissade");
                                             allData.push(listOfWinterSlides);
                                             dataToSave = [].concat.apply([], allData);
                                             sendDataToCollection(db, config.collection, dataToSave, function(err){

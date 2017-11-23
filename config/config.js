@@ -22,8 +22,10 @@ config.listOfWinterSlidesUrl = "http://www2.ville.montreal.qc.ca/services_citoye
 config.aquaticInstallationsDb = "AquaticInstallations";
 config.rinksDb = "Rinks";
 config.winterSlidesDb = "WinterSlides";
-config.collection = "MyData";
+config.collection = "Installations";
 config.mainDb = "inf4375";
 config.dbServer = "localhost";
-
+config.dbServerPort = 27017;
+config.mongoLabUri = "mongodb://Jean-Lou.hallee:Fenderis2gr84u@ds117316.mlab.com:17316/inf4375";
+// 27017
 module.exports = config;

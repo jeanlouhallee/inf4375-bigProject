@@ -19,15 +19,22 @@ var data = require('./models/data');
 var db = require('./models/database');
 
 var refreshDatabase = function(callback){
-    db.getConnection(function(err, res){
+    db.getConnection(function(err, db){
         if(err){
             return callback(err);
         }else{
-            data.GetDataFromMontrealCityAPI(res, function(err, res){
+            db.dropDatabase(function(err, res){
                 if(err){
+                    err.myMessage = "Can't drop database.";
                     return callback(err);
+                }else{
+                    data.GetDataFromMontrealCityAPI(db, function(err, res){
+                        if(err){
+                            return callback(err);
+                        }
+                        return callback(null);
+                    });
                 }
-                return callback(null);
             });
         }
     });
@@ -38,21 +45,14 @@ var startUpTasks = function(callback){
         if(err){
             return callback(err);
         }else{
-            db.dropDatabase(function(err, res){
+            console.log("Database dropped!\n");
+            refreshDatabase(function(err){
                 if(err){
-                    err.myMessage = "Can't drop database.";
                     return callback(err);
                 }else{
-                    console.log("Database dropped!\n");
-                    refreshDatabase(function(err){
-                        if(err){
-                            return callback(err);
-                        }else{
-                            console.log("Data updated!\n");
-                            return callback(null);
+                    console.log("Data updated!\n");
+                    return callback(null);
 
-                        }
-                    });
                 }
             });
         }

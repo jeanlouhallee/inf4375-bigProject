@@ -21,25 +21,25 @@ $(document).ready(function() {
         $.getJSON(url, function(data, status){
             var items = [];
             items.push("<thead></tr><tr><th>"+"Id"+"</th>"
-                        + "<th>"+"Nom"+"</th>"
-                        + "<th>"+"Adresse"+"</th>"
-                        + "<th>"+"Arrondissement"+"</th>"
-                        + "<th>"+"Type"+"</th>"
-                        + "<th>"+"Condition"+"</th></tr></thead><tbody>");
+            + "<th>"+"Nom"+"</th>"
+            + "<th>"+"Adresse"+"</th>"
+            + "<th>"+"Arrondissement"+"</th>"
+            + "<th>"+"Type"+"</th>"
+            + "<th>"+"Condition"+"</th></tr></thead><tbody>");
             $.each(data, function(err, line){
-                items.push("<tr>"
-                        +"<td>"+cleanOutput(line._id)+"</td>"
-                        +"<td>"+cleanOutput(line.nom)+"</td>"
-                        +"<td>"+cleanOutput(line.adresse)+"</td>"
-                        +"<td>"+cleanOutput(line.arrondissement)+"</td>"
-                        +"<td>"+cleanOutput(line.type)+"</td>"
-                        +"<td>"+cleanOutput(line.condition)+"</td>"
-                        +"</tr>");
+                items.push("<tr data-toggle='modal' data-id=" + line._id + "    data-target='#installationModal'>"
+                +"<td>"+cleanOutput(line._id)+"</td>"
+                +"<td>"+cleanOutput(line.nom)+"</td>"
+                +"<td>"+cleanOutput(line.adresse)+"</td>"
+                +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+                +"<td>"+cleanOutput(line.type)+"</td>"
+                +"<td>"+cleanOutput(line.condition)+"</td>"
+                +"</tr>");
             });
             items.push("</tbody>");
             var html = items.join("");
             $( '#myTable' ).append(html);
-            $('#myModal').modal('toggle');
+            $('#searchModal').modal('toggle');
         });
     });
 });
@@ -53,25 +53,25 @@ $(document).ready(function() {
         $.getJSON(url, function(data, status){
             var items = [];
             items.push("<thead></tr><tr><th>"+"Id"+"</th>"
-                        + "<th>"+"Nom"+"</th>"
-                        + "<th>"+"Adresse"+"</th>"
-                        + "<th>"+"Arrondissement"+"</th>"
-                        + "<th>"+"Type"+"</th>"
-                        + "<th>"+"Condition"+"</th></tr></thead><tbody>");
+            + "<th>"+"Nom"+"</th>"
+            + "<th>"+"Adresse"+"</th>"
+            + "<th>"+"Arrondissement"+"</th>"
+            + "<th>"+"Type"+"</th>"
+            + "<th>"+"Condition"+"</th></tr></thead><tbody>");
             $.each(data, function(err, line){
-                items.push("<tr>"
-                            +"<td>"+cleanOutput(line._id)+"</td>"
-                            +"<td>"+cleanOutput(line.nom)+"</td>"
-                            +"<td>"+cleanOutput(line.adresse)+"</td>"
-                            +"<td>"+cleanOutput(line.arrondissement)+"</td>"
-                            +"<td>"+cleanOutput(line.type)+"</td>"
-                            +"<td>"+cleanOutput(line.condition)+"</td>"
-                            +"</tr>");
+                items.push("<tr data-toggle='modal' data-id=" + line._id + " data-target='#installationModal'>"
+                +"<td>"+cleanOutput(line._id)+"</td>"
+                +"<td>"+cleanOutput(line.nom)+"</td>"
+                +"<td>"+cleanOutput(line.adresse)+"</td>"
+                +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+                +"<td>"+cleanOutput(line.type)+"</td>"
+                +"<td>"+cleanOutput(line.condition)+"</td>"
+                +"</tr>");
             });
             items.push("</tbody>");
             var html = items.join("");
             $( '#myTable' ).append(html);
-            $('#myModal').modal('toggle');
+            $('#searchModal').modal('toggle');
         });
     });
 });

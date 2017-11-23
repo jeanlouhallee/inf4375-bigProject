@@ -43,15 +43,16 @@ var renameProperty = function(data){
     return data;
 }
 
-var flattenSlidesAndRinks = function(data){
+var adjustData = function(data, typeToAdd){
     data.forEach(function(d){
         d.cle = d.arrondissement.cle;
         d.date_maj = d.arrondissement.date_maj;
         d.arrondissement = d.arrondissement.nom_arr;
+        d.type = typeToAdd;
     });
     return data;
 }
 
 module.exports.csvToJSON = csvToJSON;
 module.exports.renameProperty = renameProperty;
-module.exports.flattenSlidesAndRinks = flattenSlidesAndRinks;
+module.exports.adjustData = adjustData;
