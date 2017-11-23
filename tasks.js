@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var config = require('./config/config');
+var env = process.env.NODE_ENV || 'development';
+var config = require('./config/config')[env];
 var data = require('./models/data');
 var db = require('./models/database');
 

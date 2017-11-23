@@ -15,7 +15,7 @@
  */
 
 var request = require('request');
-var config = require('../config/config.js');
+var config = require('../config/config')[process.env.NODE_ENV || 'development'];
 var toolbox = require('./toolbox');
 var fs = require('fs');
 var xml2js = require('xml2js').parseString;

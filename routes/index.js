@@ -17,7 +17,7 @@
 var express = require('express');
 var jsonschema = require('jsonschema');
 var database = require('../models/database');
-var config = require('../config/config');
+var config = require('../config/config')[process.env.NODE_ENV || 'development'];
 var data = require('../models/data');
 var schemas = require('./schemas/schemas');
 var router = express.Router();

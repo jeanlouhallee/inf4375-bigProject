@@ -15,39 +15,39 @@
 */
 
 var mongodb = require('mongodb');
-var config = require('../config/config.js');
+var env = process.env.NODE_ENV || 'development';
+var config = require('../config/config')[env];
 
 var dbInstance;
 
-var getConnection2 = function(callback){
-    if (dbInstance) {
-        return callback(null, dbInstance);
+var getConnection = function(callback){
+    if(env === "development"){
+        if (dbInstance) {
+            return callback(null, dbInstance);
+        }else{
+            var server = new mongodb.Server(config.dbServer, config.dbServerPort, {auto_reconnect: true});
+            var db = new mongodb.Db(config.mainDb, server, {safe: true});
+            if (!db.openCalled) {
+                db.open(function(err, db) {
+                    if (err) {
+                        err.myMessage = "Cannot open database.";
+                        return callback(err);
+                    }
+                    dbInstance = db;
+                    return callback(err, dbInstance);
+                });
+            }
+        }
     }else{
-        var server = new mongodb.Server(config.dbServer, config.dbServerPort, {auto_reconnect: true});
-        var db = new mongodb.Db(config.mainDb, server, {safe: true});
-        if (!db.openCalled) {
-            db.open(function(err, db) {
-                if (err) {
-                    err.myMessage = "Cannot open database.";
-                    return callback(err);
-                }
+        if (dbInstance) {
+            return callback(null, dbInstance);
+        }else{
+            mongodb.connect(config.mongoLabUri, {}, function(err, db){
                 dbInstance = db;
                 return callback(err, dbInstance);
             });
         }
     }
 };
-
-var getConnection = function(callback){
-    if (dbInstance) {
-        return callback(null, dbInstance);
-    }else{
-        mongodb.connect(config.mongoLabUri, {}, function(err, db){
-            dbInstance = db;
-            return callback(err, dbInstance);
-        });
-    }
-};
-
 
 module.exports.getConnection = getConnection;
