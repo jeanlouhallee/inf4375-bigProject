@@ -17,7 +17,8 @@ $(document).ready(function() {
         btn.preventDefault();
         $('#myTable').empty();
         var arrondissement = $( '#field-arrondissement' ).val();
-        var url = "http://localhost:3000/installations?arrondissement=" + arrondissement;
+        var baseUrl = window.location.protocol + "//" + window.location.host + "/";
+        var url = baseUrl + "installations?arrondissement=" + arrondissement;
         $.getJSON(url, function(data, status){
             var items = [];
             items.push("<thead></tr><tr><th>"+"Id"+"</th>"
@@ -49,7 +50,8 @@ $(document).ready(function() {
         btn.preventDefault();
         $('#myTable').empty();
         var nom = $( '#installations option:selected').val();
-        var url = "http://localhost:3000/installations?nom=" + nom;
+        var baseUrl = window.location.protocol + "//" + window.location.host + "/";
+        var url = baseUrl + "installations?nom=" + nom;
         $.getJSON(url, function(data, status){
             var items = [];
             items.push("<thead></tr><tr><th>"+"Id"+"</th>"
