@@ -38,7 +38,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-///A MODIFIER POUR LA LSITE D'ARRONDISSEMENTS
 var task = cron.schedule('0 0 * * *', function(){
     tasks.refreshDatabase(function(err){
         if(err){
