@@ -40,7 +40,7 @@ var refreshDatabase = function(callback){
     });
 }
 
-var startUpTasks = function(callback){
+var startUpTasks = function(callback, next){
     db.getConnection(function(err, db){
         if(err){
             return callback(err);

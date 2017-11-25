@@ -11,44 +11,41 @@
 //- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //- See the License for the specific language governing permissions and
 //- limitations under the License.
-$(document).ready(function(){
-    $('#myTable tr').on('click', function() {
-        alert("You clicked my <tr>!");
-        // Get the record's ID via attribute
-        var id = $(this).attr('data-id');
-        var baseUrl = window.location.protocol + "//" + window.location.host + "/";
 
-        $.ajax({
-            url: baseUrl + "installations/" + id,
-            method: 'GET'
-        }).success(function(response) {
-            // Populate the form fields with the data returned from server
-            $('#installationForm')
-            .find('[name="id"]').val(response._id).end()
-            .find('[name="nom"]').val(response.nom).end()
-            .find('[name="type"]').val(response.type).end()
-            .find('[name="arrondissement"]').val(response.arrondissement).end();
+$(document).ready( function () {
+    $(document).on("click", ".editButton", function () {
+           var id = $(this).attr('data-id');
+           $.ajax({
+               url: 'http://localhost:3000/installations/' + id,
+               method: 'GET'
+           }).success(function(response) {
+               // Populate the form fields with the data returned from server
+               $('#installationForm')
+                   .find('[name="id"]').val(response._id).end()
+                   .find('[name="nom"]').val(response.nom).end()
+                   .find('[name="type"]').val(response.adresse).end()
+                   .find('[name="arrondissement"]').val(response.arrondissement).end();
 
-            // Show the dialog
-            bootbox
-            .dialog({
-                title: 'Edit the user profile',
-                message: $('#installationForm'),
-                show: false // We will show it manually later
-            })
-            .on('shown.bs.modal', function() {
-                $('#installationForm')
-                .show()                             // Show the login form
-                .formValidation('resetForm'); // Reset form
-            })
-            .on('hide.bs.modal', function(e) {
-                // Bootbox will remove the modal (including the body which contains the login form)
-                // after hiding the modal
-                // Therefor, we need to backup the form
-                $('#installationForm').hide().appendTo('body');
-            })
-            .modal('show');
-        });
+               // Show the dialog
+               bootbox
+                   .dialog({
+                       title: 'Edit an installation',
+                       message: $('#installationForm'),
+                       show: false // We will show it manually later
+                   })
+                   .on('shown.bs.modal', function() {
+                       $('#installationForm')
+                           .show()                             // Show the login form
+                        //    .formValidation('resetForm'); // Reset form
+                   })
+                   .on('hide.bs.modal', function(e) {
+                       // Bootbox will remove the modal (including the body which contains the login form)
+                       // after hiding the modal
+                       // Therefor, we need to backup the form
+                       $('#installationForm').hide().appendTo('body');
+                   })
+                   .modal('show');
+       });
     });
 });
 
@@ -66,15 +63,17 @@ $(document).ready(function() {
             + "<th>"+"Adresse"+"</th>"
             + "<th>"+"Arrondissement"+"</th>"
             + "<th>"+"Type"+"</th>"
-            + "<th>"+"Condition"+"</th></tr></thead><tbody>");
+            + "<th>"+"Condition"+"</th>"
+            + "<th>"+"Edit"+"</th></tr></thead><tbody>");
             $.each(data, function(err, line){
-                items.push("<tr data-toggle='modal' data-id=" + line._id + "    data-target='#installationModal'>"
+                items.push("<tr>"
                 +"<td>"+cleanOutput(line._id)+"</td>"
                 +"<td>"+cleanOutput(line.nom)+"</td>"
                 +"<td>"+cleanOutput(line.adresse)+"</td>"
                 +"<td>"+cleanOutput(line.arrondissement)+"</td>"
                 +"<td>"+cleanOutput(line.type)+"</td>"
                 +"<td>"+cleanOutput(line.condition)+"</td>"
+                + "<td><button type='button' data-id=" + line._id + " class='editButton'>Edit</button>"
                 +"</tr>");
             });
             items.push("</tbody>");
@@ -99,15 +98,17 @@ $(document).ready(function() {
             + "<th>"+"Adresse"+"</th>"
             + "<th>"+"Arrondissement"+"</th>"
             + "<th>"+"Type"+"</th>"
-            + "<th>"+"Condition"+"</th></tr></thead><tbody>");
+            + "<th>"+"Condition"+"</th>"
+            + "<th>"+"Edit"+"</th></tr></thead><tbody>");
             $.each(data, function(err, line){
-                items.push("<tr data-toggle='modal' data-id=" + line._id + " data-target='#installationModal'>"
+                items.push("<tr>"
                 +"<td>"+cleanOutput(line._id)+"</td>"
                 +"<td>"+cleanOutput(line.nom)+"</td>"
                 +"<td>"+cleanOutput(line.adresse)+"</td>"
                 +"<td>"+cleanOutput(line.arrondissement)+"</td>"
                 +"<td>"+cleanOutput(line.type)+"</td>"
                 +"<td>"+cleanOutput(line.condition)+"</td>"
+                + "<td><button type='button' data-id=" + line._id + " class='editButton'>Edit</button>"
                 +"</tr>");
             });
             items.push("</tbody>");
