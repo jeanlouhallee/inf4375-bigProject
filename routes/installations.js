@@ -74,7 +74,7 @@ router.get('/:id', function(req, res, next) {
                     res.sendStatus(500);
                 }
                 else{
-                    res.json(data)
+                    res.json(data[0])
                 }
             });
         }
@@ -136,7 +136,6 @@ router.delete('/:id', function(req, res) {
                     } else if (err) {
                         res.sendStatus(500);
                     } else {
-                        data.removeInstallationFromList(req.params.id);
                         res.sendStatus(200);
                     }
                 });
