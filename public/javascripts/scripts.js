@@ -31,7 +31,7 @@ $(document).ready( function () {
         var id = $(this).attr('data-id');
 
         $.ajax({
-            url: '/installatins/' + id,
+            url: '/installations/' + id,
             type: 'DELETE',
             success: function(){
                 alert("data deleted!");
