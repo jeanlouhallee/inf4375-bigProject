@@ -16,6 +16,8 @@
 
 var express = require('express');
 var mongodb = require('mongodb');
+var jsonschema = require('jsonschema');
+var schemas = require('./schemas/schemas');
 var database = require('../models/database');
 var config = require('../config/config')[process.env.NODE_ENV || 'development'];
 var data = require('../models/data');
@@ -80,15 +82,44 @@ router.get('/:id', function(req, res, next) {
         }
     });
 });
-try{
-                id = new mongodb.ObjectId(req.params.id);
-            }catch(err){
-                invalidMongoId = true;
-            }
+
+// router.put('/:id', function(req, res) {
+//     let id;
+//     let invalidMongoId = false;
+//     var result = jsonschema.validate(req.body, schemas.updateCondition);
+//     if (result.errors.length > 0) {
+//         res.status(400).json(result);
+//     } else {
+//         database.getConnection(function(err, db){
+//             db.collection(config.collection, function (err, collection) {
+//                 if (err) {
+//                     res.sendStatus(500);
+//                 } else {
+//                     try{
+//                         id = new mongodb.ObjectId(req.params.id);
+//                     }catch(err){
+//                         invalidMongoId = true;
+//                     }
+//                     collection.update({_id: id}, {$set : {condition : req.body.condition} }, function(err, result) {
+//                         if (invalidMongoId || result.result.n === 0) {
+//                             res.sendStatus(404);
+//                         } else if (err) {
+//                             res.sendStatus(500);
+//                         } else {
+//                             res.sendStatus(200);
+//                         }
+//                     });
+//                 }
+//             });
+//         });
+//     }
+// });
+
 router.put('/:id', function(req, res) {
     let id;
     let invalidMongoId = false;
-    var result = jsonschema.validate(req.body, schemas.updateCondition);
+    console.log(req.body);
+    var result = jsonschema.validate(req.body, schemas.updateInstallation);
     if (result.errors.length > 0) {
         res.status(400).json(result);
     } else {
@@ -102,7 +133,7 @@ router.put('/:id', function(req, res) {
                     }catch(err){
                         invalidMongoId = true;
                     }
-                    collection.update({_id: id}, {$set : {condition : req.body.condition} }, function(err, result) {
+                    collection.update({_id: id}, {$set : req.body}, function(err, result) {
                         if (invalidMongoId || result.result.n === 0) {
                             res.sendStatus(404);
                         } else if (err) {

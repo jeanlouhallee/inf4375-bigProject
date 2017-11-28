@@ -27,6 +27,25 @@
 // });
 
 $(document).ready( function () {
+    $(document).on("click", "#updateButton", function () {
+        var id = $('#installationForm').find('[name="id"]').val();
+        var mongoUpdateBody = createJsonObjectForMongoUpdate($('#installationForm').serializeArray());
+        $.ajax({
+            url: '/installations/' + id,
+            type: 'PUT',
+            data: mongoUpdateBody,
+            success: function(){
+                alert("Installation " + id + " updated successfuly!");
+                window.location = '/';
+            },
+            error: function(err){
+                alert("Oh, something went wrong! Don't worry, it's not your fault.\nError status: " + err.status);
+            }
+        });
+    });
+});
+
+$(document).ready( function () {
     $(document).on("click", ".deleteButton", function () {
         var id = $(this).attr('data-id');
 
@@ -221,9 +240,18 @@ $(document).ready(function() {
     });
 });
 
-var cleanOutput = function(string){
+var cleanOutput = function(string) {
     if(!string){
         return "N/A"
     }
     return string
+}
+
+var createJsonObjectForMongoUpdate = function(data) {
+    var result = {};
+    for (var i = 0; i < data.length; i++) {
+      result[data[i].name] = data[i].value;
+    }
+    // return JSON.stringify(result);
+    return result;
 }

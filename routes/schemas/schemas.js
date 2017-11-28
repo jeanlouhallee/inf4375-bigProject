@@ -49,35 +49,30 @@ module.exports = {
             }
         }
     },
-    updateCustomer: {
+    updateInstallation: {
         type: "object",
         required: true,
         additionalProperties: false,
         properties: {
-            age: {
-                type: "number",
+            nom: {
+                type: "string",
                 required: false
             },
             nom: {
                 type: "string",
                 required: false
             },
-            prenom: {
+            adresse: {
                 type: "string",
                 required: false
             },
-            date_naissance: {
+            arrondissement: {
                 type: "string",
-                format: "date-time",
                 required: false
             },
-            grades: {
-                type: "array",
+            condition: {
+                type: "string",
                 required: false,
-                items: {
-                    type: "string",
-                    required: false
-                }
             }
         }
     }
