@@ -50,16 +50,17 @@ $(document).ready( function () {
 
         $.ajax({
             url: '/installations/' + id,
-            type: 'GET'
-        }).done(function(response) {
-            // Populate the form fields with the data returned from server
-            $('#installationForm')
-            .find('[name="id"]').val(response._id).end()
-            .find('[name="type"]').val(response.type).end()
-            .find('[name="nom"]').val(response.nom).end()
-            .find('[name="adresse"]').val(response.adresse).end()
-            .find('[name="arrondissement"]').val(response.arrondissement).end()
-            .find('[name="condition"]').val(cleanOutput(response.condition)).end()
+            type: 'GET',
+            success: function(response){
+                $('#installationForm')
+                .find('[name="id"]').val(response._id).end()
+                .find('[name="type"]').val(response.type).end()
+                .find('[name="nom"]').val(response.nom).end()
+                .find('[name="adresse"]').val(response.adresse).end()
+                .find('[name="arrondissement"]').val(response.arrondissement).end()
+                .find('[name="condition"]').val(cleanOutput(response.condition)).end()
+            }
+        })
 
             //    // Show the dialog
             //    bootbox
@@ -80,7 +81,7 @@ $(document).ready( function () {
             //            $('#installationForm').hide().appendTo('body');
             //        })
             //        .modal('show');
-        });
+        // });
     });
 });
 
@@ -89,35 +90,66 @@ $(document).ready(function() {
         btn.preventDefault();
         $('#myTable').empty();
         var arrondissement = $( '#field-arrondissement' ).val();
-        var baseUrl = window.location.protocol + "//" + window.location.host + "/";
-        var url = baseUrl + "installations?arrondissement=" + arrondissement;
-        $.getJSON(url, function(data, status){
-            var items = [];
-            items.push("<thead></tr><tr><th>"+"Id"+"</th>"
-            + "<th>"+"Nom"+"</th>"
-            + "<th>"+"Adresse"+"</th>"
-            + "<th>"+"Arrondissement"+"</th>"
-            + "<th>"+"Type"+"</th>"
-            + "<th>"+"Condition"+"</th>"
-            + "<th>"+"Edit"+"</th>"
-            + "<th>"+"Delete"+"</th></tr></thead><tbody>");
-            $.each(data, function(err, line){
-                items.push("<tr>"
-                +"<td>"+cleanOutput(line._id)+"</td>"
-                +"<td>"+cleanOutput(line.nom)+"</td>"
-                +"<td>"+cleanOutput(line.adresse)+"</td>"
-                +"<td>"+cleanOutput(line.arrondissement)+"</td>"
-                +"<td>"+cleanOutput(line.type)+"</td>"
-                +"<td>"+cleanOutput(line.condition)+"</td>"
-                + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
-                + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
-                +"</tr>");
-            });
-            items.push("</tbody>");
-            var html = items.join("");
-            $( '#myTable' ).append(html);
-            $('#searchModal').modal('toggle');
-        });
+        // var baseUrl = window.location.protocol + "//" + window.location.host + "/";
+        // var url = baseUrl + "installations?arrondissement=" + arrondissement;
+        $.ajax({
+            url: '/installations?arrondissement=' + arrondissement,
+            type: 'GET',
+            success: function(data){
+                var items = [];
+                items.push("<thead></tr><tr><th>"+"Id"+"</th>"
+                + "<th>"+"Nom"+"</th>"
+                + "<th>"+"Adresse"+"</th>"
+                + "<th>"+"Arrondissement"+"</th>"
+                + "<th>"+"Type"+"</th>"
+                + "<th>"+"Condition"+"</th>"
+                + "<th>"+"Edit"+"</th>"
+                + "<th>"+"Delete"+"</th></tr></thead><tbody>");
+                $.each(data, function(err, line){
+                    items.push("<tr>"
+                    +"<td>"+cleanOutput(line._id)+"</td>"
+                    +"<td>"+cleanOutput(line.nom)+"</td>"
+                    +"<td>"+cleanOutput(line.adresse)+"</td>"
+                    +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+                    +"<td>"+cleanOutput(line.type)+"</td>"
+                    +"<td>"+cleanOutput(line.condition)+"</td>"
+                    + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
+                    + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
+                    +"</tr>");
+                });
+                items.push("</tbody>");
+                var html = items.join("");
+                $( '#myTable' ).append(html);
+                $('#searchModal').modal('toggle');
+            }
+        })
+        // $.getJSON(url, function(data, status){
+        //     var items = [];
+        //     items.push("<thead></tr><tr><th>"+"Id"+"</th>"
+        //     + "<th>"+"Nom"+"</th>"
+        //     + "<th>"+"Adresse"+"</th>"
+        //     + "<th>"+"Arrondissement"+"</th>"
+        //     + "<th>"+"Type"+"</th>"
+        //     + "<th>"+"Condition"+"</th>"
+        //     + "<th>"+"Edit"+"</th>"
+        //     + "<th>"+"Delete"+"</th></tr></thead><tbody>");
+        //     $.each(data, function(err, line){
+        //         items.push("<tr>"
+        //         +"<td>"+cleanOutput(line._id)+"</td>"
+        //         +"<td>"+cleanOutput(line.nom)+"</td>"
+        //         +"<td>"+cleanOutput(line.adresse)+"</td>"
+        //         +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+        //         +"<td>"+cleanOutput(line.type)+"</td>"
+        //         +"<td>"+cleanOutput(line.condition)+"</td>"
+        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
+        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
+        //         +"</tr>");
+        //     });
+        //     items.push("</tbody>");
+        //     var html = items.join("");
+        //     $( '#myTable' ).append(html);
+        //     $('#searchModal').modal('toggle');
+        // });
     });
 });
 
@@ -126,35 +158,66 @@ $(document).ready(function() {
         btn.preventDefault();
         $('#myTable').empty();
         var nom = $( '#installations option:selected').val();
-        var baseUrl = window.location.protocol + "//" + window.location.host + "/";
-        var url = baseUrl + "installations?nom=" + nom;
-        $.getJSON(url, function(data, status){
-            var items = [];
-            items.push("<thead></tr><tr><th>"+"Id"+"</th>"
-            + "<th>"+"Nom"+"</th>"
-            + "<th>"+"Adresse"+"</th>"
-            + "<th>"+"Arrondissement"+"</th>"
-            + "<th>"+"Type"+"</th>"
-            + "<th>"+"Condition"+"</th>"
-            + "<th>"+"Edit"+"</th>"
-            + "<th>"+"Delete"+"</th></tr></thead><tbody>");
-            $.each(data, function(err, line){
-                items.push("<tr>"
-                +"<td>"+cleanOutput(line._id)+"</td>"
-                +"<td>"+cleanOutput(line.nom)+"</td>"
-                +"<td>"+cleanOutput(line.adresse)+"</td>"
-                +"<td>"+cleanOutput(line.arrondissement)+"</td>"
-                +"<td>"+cleanOutput(line.type)+"</td>"
-                +"<td>"+cleanOutput(line.condition)+"</td>"
-                + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
-                + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
-                +"</tr>");
-            });
-            items.push("</tbody>");
-            var html = items.join("");
-            $( '#myTable' ).append(html);
-            $('#searchModal').modal('toggle');
-        });
+        // var baseUrl = window.location.protocol + "//" + window.location.host + "/";
+        // var url = baseUrl + "installations?nom=" + nom;
+        $.ajax({
+            url: '/installations?nom=' + nom,
+            type: 'GET',
+            success: function(data){
+                var items = [];
+                items.push("<thead></tr><tr><th>"+"Id"+"</th>"
+                + "<th>"+"Nom"+"</th>"
+                + "<th>"+"Adresse"+"</th>"
+                + "<th>"+"Arrondissement"+"</th>"
+                + "<th>"+"Type"+"</th>"
+                + "<th>"+"Condition"+"</th>"
+                + "<th>"+"Edit"+"</th>"
+                + "<th>"+"Delete"+"</th></tr></thead><tbody>");
+                $.each(data, function(err, line){
+                    items.push("<tr>"
+                    +"<td>"+cleanOutput(line._id)+"</td>"
+                    +"<td>"+cleanOutput(line.nom)+"</td>"
+                    +"<td>"+cleanOutput(line.adresse)+"</td>"
+                    +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+                    +"<td>"+cleanOutput(line.type)+"</td>"
+                    +"<td>"+cleanOutput(line.condition)+"</td>"
+                    + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
+                    + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
+                    +"</tr>");
+                });
+                items.push("</tbody>");
+                var html = items.join("");
+                $( '#myTable' ).append(html);
+                $('#searchModal').modal('toggle');
+            }
+        })
+        // $.getJSON(url, function(data, status){
+        //     var items = [];
+        //     items.push("<thead></tr><tr><th>"+"Id"+"</th>"
+        //     + "<th>"+"Nom"+"</th>"
+        //     + "<th>"+"Adresse"+"</th>"
+        //     + "<th>"+"Arrondissement"+"</th>"
+        //     + "<th>"+"Type"+"</th>"
+        //     + "<th>"+"Condition"+"</th>"
+        //     + "<th>"+"Edit"+"</th>"
+        //     + "<th>"+"Delete"+"</th></tr></thead><tbody>");
+        //     $.each(data, function(err, line){
+        //         items.push("<tr>"
+        //         +"<td>"+cleanOutput(line._id)+"</td>"
+        //         +"<td>"+cleanOutput(line.nom)+"</td>"
+        //         +"<td>"+cleanOutput(line.adresse)+"</td>"
+        //         +"<td>"+cleanOutput(line.arrondissement)+"</td>"
+        //         +"<td>"+cleanOutput(line.type)+"</td>"
+        //         +"<td>"+cleanOutput(line.condition)+"</td>"
+        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
+        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
+        //         +"</tr>");
+        //     });
+        //     items.push("</tbody>");
+        //     var html = items.join("");
+        //     $( '#myTable' ).append(html);
+        //     $('#searchModal').modal('toggle');
+        // });
     });
 });
 
