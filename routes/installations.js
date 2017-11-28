@@ -130,7 +130,6 @@ router.delete('/:id', function(req, res) {
                 }
                 collection.remove({_id: id}, function(err, result) {
                     if (invalidMongoId || result.result.n === 0) {
-                        console.log(err || "Invalid Id.\n")
                         res.status(404).json("{error: Can't find id " + req.params.id + "}");;
                     } else if (err) {
                         res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;

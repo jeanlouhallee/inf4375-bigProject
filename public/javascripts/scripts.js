@@ -13,19 +13,6 @@
 //- limitations under the License.
 //
 
-// $(document).ready( function () {
-//     $(document).on("click", "#deleteButton", function () {
-//            var id = $(this).attr('data-id');
-//            $.ajax({
-//                url: '/installations/' + id,
-//                type: 'DELETE'
-//            }).done(function(response) {
-//                alert(response);
-//
-//        });
-//     });
-// });
-
 $(document).ready( function () {
     $(document).on("click", "#updateButton", function () {
         var id = $('#installationForm').find('[name="id"]').val();
@@ -82,27 +69,6 @@ $(document).ready( function () {
                 .find('[name="condition"]').attr('disabled', isNotGlissade);
             }
         })
-
-            //    // Show the dialog
-            //    bootbox
-            //        .dialog({
-            //            title: 'Edit an installation',
-            //            message: $('#installationForm'),
-            //            show: false // We will show it manually later
-            //        })
-            //        .on('shown.bs.modal', function() {
-            //            $('#installationForm')
-            //                .show()                             // Show the login form
-            //             //    .formValidation('resetForm'); // Reset form
-            //        })
-            //        .on('hide.bs.modal', function(e) {
-            //            // Bootbox will remove the modal (including the body which contains the login form)
-            //            // after hiding the modal
-            //            // Therefor, we need to backup the form
-            //            $('#installationForm').hide().appendTo('body');
-            //        })
-            //        .modal('show');
-        // });
     });
 });
 
@@ -111,8 +77,6 @@ $(document).ready(function() {
         btn.preventDefault();
         $('#myTable').empty();
         var arrondissement = $( '#field-arrondissement' ).val();
-        // var baseUrl = window.location.protocol + "//" + window.location.host + "/";
-        // var url = baseUrl + "installations?arrondissement=" + arrondissement;
         $.ajax({
             url: '/installations?arrondissement=' + arrondissement,
             type: 'GET',
@@ -144,33 +108,6 @@ $(document).ready(function() {
                 $('#searchModal').modal('toggle');
             }
         })
-        // $.getJSON(url, function(data, status){
-        //     var items = [];
-        //     items.push("<thead></tr><tr><th>"+"Id"+"</th>"
-        //     + "<th>"+"Nom"+"</th>"
-        //     + "<th>"+"Adresse"+"</th>"
-        //     + "<th>"+"Arrondissement"+"</th>"
-        //     + "<th>"+"Type"+"</th>"
-        //     + "<th>"+"Condition"+"</th>"
-        //     + "<th>"+"Edit"+"</th>"
-        //     + "<th>"+"Delete"+"</th></tr></thead><tbody>");
-        //     $.each(data, function(err, line){
-        //         items.push("<tr>"
-        //         +"<td>"+cleanOutput(line._id)+"</td>"
-        //         +"<td>"+cleanOutput(line.nom)+"</td>"
-        //         +"<td>"+cleanOutput(line.adresse)+"</td>"
-        //         +"<td>"+cleanOutput(line.arrondissement)+"</td>"
-        //         +"<td>"+cleanOutput(line.type)+"</td>"
-        //         +"<td>"+cleanOutput(line.condition)+"</td>"
-        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
-        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
-        //         +"</tr>");
-        //     });
-        //     items.push("</tbody>");
-        //     var html = items.join("");
-        //     $( '#myTable' ).append(html);
-        //     $('#searchModal').modal('toggle');
-        // });
     });
 });
 
@@ -179,8 +116,6 @@ $(document).ready(function() {
         btn.preventDefault();
         $('#myTable').empty();
         var nom = $( '#installations option:selected').val();
-        // var baseUrl = window.location.protocol + "//" + window.location.host + "/";
-        // var url = baseUrl + "installations?nom=" + nom;
         $.ajax({
             url: '/installations?nom=' + nom,
             type: 'GET',
@@ -212,33 +147,6 @@ $(document).ready(function() {
                 $('#searchModal').modal('toggle');
             }
         })
-        // $.getJSON(url, function(data, status){
-        //     var items = [];
-        //     items.push("<thead></tr><tr><th>"+"Id"+"</th>"
-        //     + "<th>"+"Nom"+"</th>"
-        //     + "<th>"+"Adresse"+"</th>"
-        //     + "<th>"+"Arrondissement"+"</th>"
-        //     + "<th>"+"Type"+"</th>"
-        //     + "<th>"+"Condition"+"</th>"
-        //     + "<th>"+"Edit"+"</th>"
-        //     + "<th>"+"Delete"+"</th></tr></thead><tbody>");
-        //     $.each(data, function(err, line){
-        //         items.push("<tr>"
-        //         +"<td>"+cleanOutput(line._id)+"</td>"
-        //         +"<td>"+cleanOutput(line.nom)+"</td>"
-        //         +"<td>"+cleanOutput(line.adresse)+"</td>"
-        //         +"<td>"+cleanOutput(line.arrondissement)+"</td>"
-        //         +"<td>"+cleanOutput(line.type)+"</td>"
-        //         +"<td>"+cleanOutput(line.condition)+"</td>"
-        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary editButton' data-toggle='modal' data-target='#installationModal'>Edit</button>"
-        //         + "<td><button type='button' data-id=" + line._id + " class='btn btn-primary btn-danger deleteButton'>Delete</button>"
-        //         +"</tr>");
-        //     });
-        //     items.push("</tbody>");
-        //     var html = items.join("");
-        //     $( '#myTable' ).append(html);
-        //     $('#searchModal').modal('toggle');
-        // });
     });
 });
 
