@@ -32,7 +32,7 @@ $(document).ready( function () {
         var mongoUpdateBody = createJsonObjectForMongoUpdate($('#installationForm').serializeArray());
         $.ajax({
             url: '/installations/' + id,
-            type: 'PUT',
+            type: 'PATCH',
             data: mongoUpdateBody,
             success: function(){
                 alert("Installation " + id + " updated successfuly!");
@@ -71,6 +71,7 @@ $(document).ready( function () {
             url: '/installations/' + id,
             type: 'GET',
             success: function(response){
+                let isNotGlissade = response.type !== "Glissade";
                 $('#installationForm')
                 .find('[name="id"]').val(response._id).end()
                 .find('[name="type"]').val(response.type).end()
@@ -78,6 +79,7 @@ $(document).ready( function () {
                 .find('[name="adresse"]').val(response.adresse).end()
                 .find('[name="arrondissement"]').val(response.arrondissement).end()
                 .find('[name="condition"]').val(cleanOutput(response.condition)).end()
+                .find('[name="condition"]').attr('disabled', isNotGlissade);
             }
         })
 

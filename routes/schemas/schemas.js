@@ -15,34 +15,11 @@
 */
 
 module.exports = {
-    updateGlissade: {
+    updateGlissadeCondition: {
         type: "object",
         required: true,
         additionalProperties: false,
         properties: {
-            _id: {
-                type: "string",
-                required: true
-            },
-            nom: {
-                type: "string",
-                required: false
-            },
-            condition: {
-                type: "string",
-                required: true
-            }
-        }
-    },
-    deleteInstallation: {
-        type: "object",
-        required: true,
-        additionalProperties: false,
-        properties: {
-            nom: {
-                type: "string",
-                required: true
-            },
             condition: {
                 type: "string",
                 required: true

@@ -115,7 +115,7 @@ router.get('/:id', function(req, res, next) {
 //     }
 // });
 
-router.put('/:id', function(req, res) {
+router.patch('/:id', function(req, res) {
     let id;
     let invalidMongoId = false;
     console.log(req.body);
@@ -135,10 +135,12 @@ router.put('/:id', function(req, res) {
                     }
                     collection.update({_id: id}, {$set : req.body}, function(err, result) {
                         if (invalidMongoId || result.result.n === 0) {
+                            console.log(err || "Invalid Id\n");
                             res.sendStatus(404);
                         } else if (err) {
                             res.sendStatus(500);
                         } else {
+                            console.log(result);
                             res.sendStatus(200);
                         }
                     });
@@ -163,10 +165,12 @@ router.delete('/:id', function(req, res) {
                 }
                 collection.remove({_id: id}, function(err, result) {
                     if (invalidMongoId || result.result.n === 0) {
+                        console.log(err || "Invalid Id.\n")
                         res.sendStatus(404);
                     } else if (err) {
                         res.sendStatus(500);
                     } else {
+                        console.log(result.documents);
                         res.sendStatus(200);
                     }
                 });
