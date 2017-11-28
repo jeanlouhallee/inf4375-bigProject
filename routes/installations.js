@@ -67,7 +67,9 @@ router.get('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res) {
     let id;
     var result = jsonschema.validate(req.body, schemas.updateInstallation);
-    if (result.errors.length > 0) {
+    if(!(req.body.condition && req.body.type !== "Glissade")){
+        res.status(400).json("{error: 'You can't modify field condition on installations other than Glissade'}");
+    } else if (result.errors.length > 0) {
         res.status(400).json(result);
     } else {
         database.getConnection(function(err, db){
