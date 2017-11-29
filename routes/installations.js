@@ -68,11 +68,13 @@ router.get('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res) {
     let id;
     var result = jsonschema.validate(req.body, schemas.updateInstallation);
-    if(!((!req.body.condition) && req.body.type !== "Glissade")){
+    if(!(!req.body.condition && req.body.type !== "Glissade")){
         res.status(400).json({error: "You can't modify field condition on installations other than Glissade"});
+        return
     } else if (result.errors.length > 0) {
         res.status(400).json(result);
-    } else {
+        return;
+        } else {
         database.getConnection(function(err, db){
             db.collection(config.collection, function (err, collection) {
                 if (err) {
@@ -109,11 +111,11 @@ router.delete('/:id', function(req, res) {
                 try{
                     id = new mongodb.ObjectId(req.params.id)
                 }catch(err){
-                    res.status(404).json("{error: Can't find id " + req.params.id + "}");
+                    res.status(404).json({error: "Can't find id " + req.params.id});
                 }
                 collection.remove({_id: id}, function(err, result) {
                     if (result.result.n === 0) {
-                        res.status(404).json("{error: Can't find id " + req.params.id + "}");
+                        res.status(404).json({error: "Can't find id " + req.params.id});
                     } else if (err) {
                         res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                     } else {
