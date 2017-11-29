@@ -26,11 +26,11 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
-            res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
+            res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
             db.collection(config.collection).find(req.query).toArray(function(err, data){
                 if(err){
-                    res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
+                    res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 }else{
                     res.json(data)
                 }
@@ -43,21 +43,22 @@ router.get('/:id', function(req, res, next) {
     let id;
     database.getConnection(function(err, db){
         if(err){
-            res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
+            res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
             try{
                 id = new mongodb.ObjectId(req.params.id);
             }catch(err){
-                res.status(404).json("{error: Can't find id " + req.params.id + "}");;
+                res.status(404).json({error: "Can't find id " + req.params.id});
+                return;
             }
             db.collection(config.collection).find({_id: id}).toArray(function(err, data){
-                if(!data){
-                    res.status(404).json("{error: Can't find id " + req.params.id + "}");;
+                if(data.length === 0){
+                    res.status(404).json({error: "Can't find id " + req.params.id});
                 }else if (err) {
-                    res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");
+                    res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 }
                 else{
-                    res.json(data[0])
+                    res.json(data[0]);
                 }
             });
         }
@@ -67,26 +68,27 @@ router.get('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res) {
     let id;
     var result = jsonschema.validate(req.body, schemas.updateInstallation);
-    if(!(req.body.condition && req.body.type !== "Glissade")){
-        res.status(400).json("{error: 'You can't modify field condition on installations other than Glissade'}");
+    if(!((!req.body.condition) && req.body.type !== "Glissade")){
+        res.status(400).json({error: "You can't modify field condition on installations other than Glissade"});
     } else if (result.errors.length > 0) {
         res.status(400).json(result);
     } else {
         database.getConnection(function(err, db){
             db.collection(config.collection, function (err, collection) {
                 if (err) {
-                    res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");
+                    res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 } else {
                     try{
                         id = new mongodb.ObjectId(req.params.id);
                     }catch(err){
-                        res.status(404).json("{error: Can't find id " + req.params.id + "}");;
+                        res.status(404).json({error: "Can't find id " + req.params.id});
+                        return;
                     }
                     collection.update({_id: id}, {$set : req.body}, function(err, result) {
                         if (result.result.n === 0) {
-                            res.status(404).json("{error: Can't find id " + req.params.id + "}");;
+                            res.status(404).json({error: "Can't find id " + req.params.id});
                         } else if (err) {
-                            res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
+                            res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                         } else {
                             res.status(200).json(result.result);
                         }
@@ -102,40 +104,24 @@ router.delete('/:id', function(req, res) {
     database.getConnection(function(err, db){
         db.collection(config.collection, function (err, collection) {
             if (err) {
-                res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
+                res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
             } else {
                 try{
                     id = new mongodb.ObjectId(req.params.id)
                 }catch(err){
-                    res.status(404).json("{error: Can't find id " + req.params.id + "}");;
+                    res.status(404).json("{error: Can't find id " + req.params.id + "}");
                 }
                 collection.remove({_id: id}, function(err, result) {
                     if (result.result.n === 0) {
-                        res.status(404).json("{error: Can't find id " + req.params.id + "}");;
+                        res.status(404).json("{error: Can't find id " + req.params.id + "}");
                     } else if (err) {
-                        res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
+                        res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                     } else {
                         res.status(200).json(result);
                     }
                 });
             }
         });
-    });
-});
-
-router.get('/mauvaise_condition', function(req, res, next) {
-    database.getConnection(function(err, db){
-        if(err){
-            res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
-        }else{
-            db.collection(config.collection).find({condition: "Mauvaise"}).sort({ nom: 1}).toArray(function(err, data){
-                if(err){
-                    res.status(500).json("{error: 'Internal server error; don't worry, it's not your fault.'}");;
-                }else{
-                    res.json(data)
-                }
-            });
-        }
     });
 });
 

@@ -25,6 +25,7 @@ var tasks = require('./tasks');
 var index = require('./routes/index');
 var doc = require('./routes/doc');
 var installations = require('./routes/installations');
+var mauvaiseCondition = require('./routes/mauvaise_condition');
 
 var app = express();
 // view engine setup
@@ -57,6 +58,7 @@ task.start();
 app.use('/', index);
 app.use('/doc', doc);
 app.use('/installations', installations);
+app.use('/mauvaise_condition', mauvaiseCondition);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -70,7 +72,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  
+
   // render the error page
   res.status(err.status || 500);
   if(err.status === 404){

@@ -26,8 +26,20 @@ $(document).ready( function () {
                 window.location = '/';
             },
             error: function(err){
-                alert("Oh, something went wrong! Don't worry, it's not your fault.\nError status: " + err.status);
-            }
+                let errorMessage;
+                switch (err.status){
+                    case 400:
+                        errorMessage = "Bad Request\nError status: ";
+                        break;
+                    case 404:
+                        errorMessage = "Not found\nError status: ";
+                        break;
+                    default:
+                        errorMessage = "Oh, something went wrong! Don't worry, it's not your fault.\nError status: ";
+                        break;
+                }
+                alert(errorMessage + err.status);
+            }   
         });
     });
 });
@@ -159,9 +171,11 @@ var cleanOutput = function(string) {
 
 var createJsonObjectForMongoUpdate = function(data) {
     var result = {};
+    var isGlissade = data[1].value === "Glissade";
     for (var i = 0; i < data.length; i++) {
-      result[data[i].name] = data[i].value;
+        if(!(!isGlissade && data[i].name === "condition")){
+            result[data[i].name] = data[i].value;
+        }
     }
-    // return JSON.stringify(result);
     return result;
 }
