@@ -1,45 +1,61 @@
 #%RAML 1.0
 ---
-title: Dossiers
+title: Installations de la Ville de Montréal
 baseUri: http://localhost:3000
 version: 1
 
-/dossiers:
-  get:
-    description: Obtenir tous les dossiers.
-    responses:
-      200:
-        description: "Tous les dossiers."
-        body:
-          application/json:
-            schema: !include ../schemas/schemas.json
-      500:
-        description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-  post:
-    description: Création d'un dossier.
-    body:
-      application/json:
-        schema: !include ../schemas/schemas.json
-    responses:
-      201:
-        description: Le dossier a été créé.
-        body:
-          application/json:
-            schema: !include ../schemas/schemas.json
-      400:
-        description: Les données reçues n'ont pas le bon format.
-      500:
-        description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-  /{id}:
-    put:
-      description: Modifier un dossier selon son identifiant.
-      body:
-        application/json:
-          schema: !include ../schemas/schemas.json
+/api:
+  /livres:
+    get:
+      description: Fournir la liste des livres de la bibliothèque.
+      queryParameters:
+        recherche:
+          description: Une chaîne de caractères qui doit être contenue dans le titre des livres.
+          type: string
+          required: false
+          example: RAML
       responses:
         200:
-          description: Le dossier a été modifié.
-        404:
-          description: L'identifiant spécifié n'existe pas.
+          description: La liste des livres a été correctement envoyée.
+          body:
+            application/json:
+              schema: !include ../schemas/patch-input.json
         500:
+          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+    post:
+      description: Créer un nouveau livre.
+      body:
+        application/json:
+          schema: !include ../schemas/patch-input.json
+      responses:
+        201:
+          description: Le livre a été créé.
+          body:
+            application/json:
+              schema: !include ../schemas/patch-input.json
+        400:
+          description: Les données reçues n'ont pas le bon format.
+        500:
+          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+    /{id}:
+      get:
+        description: Fournir l'information d'un livre selon son identifiant.
+        responses:
+          200:
+            description: Les données du livre ont été correctement envoyées.
+            body:
+              application/json:
+                schema: !include ../schemas/patch-input.json
+          404:
+            description: L'identifiant spécifié n'existe pas.
+          500:
+            description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+      delete:
+        description: Supprimer un livre selon son identifiant.
+        responses:
+          200:
+            description: Le livre a été supprimé.
+          404:
+            description: L'identifiant spécifié n'existe pas.
+          500:
 description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.

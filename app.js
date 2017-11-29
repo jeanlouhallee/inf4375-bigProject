@@ -67,13 +67,22 @@ app.use(function(req, res, next) {
     next(err);
 });
 
-// error handler
+// Error handler for development
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// Error handler for environments other then dev
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   if(err.status === 404){
       res.render('404');
@@ -83,7 +92,7 @@ app.use(function(err, req, res, next) {
       res.render('400');
   } else {
       console.log(err);
-      res.render('500', {error: err});
+      res.render('500');
   }
 });
 

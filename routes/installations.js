@@ -87,7 +87,9 @@ router.patch('/:id', function(req, res) {
                         return;
                     }
                     collection.update({_id: id}, {$set : req.body}, function(err, result) {
-                        if (result.result.n === 0) {
+                        if (!result) {
+                            res.status(400).json({error: "Can't format JSON"});
+                        }else if(result.result.n === 0){
                             res.status(404).json({error: "Can't find id " + req.params.id});
                         } else if (err) {
                             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});

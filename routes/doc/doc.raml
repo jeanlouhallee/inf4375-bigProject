@@ -1,43 +1,57 @@
 #%RAML 1.0
 ---
-title: Services Installations ville de MTL. 
+title: Installations de la ville de Montréal.
 baseUri: http://localhost:3000
 version: 1
 
 /installations:
-get:
-  description: Fournir la liste des installations.
-  queryParameters:
-    recherche:
-      description: Une chaîne de caractères qui représente un arrondissement.
-      type: string
-      required: false
-      example: RAML
-  responses:
-    200:
-      description: La liste des installations a été correctement envoyée.
-      body:
-            hey
-    500:
-      description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-/{nom}:
-  get:
-    description: Fournir l'information d'une installation selon son nom.
-    responses:
-      200:
-        description: Les données de l'installation ont été correctement envoyées.
-        body:
+    get:
+        description: Fournir la liste des installations.
+        queryParameters:
+        recherche:
+            description: Une chaîne de caractères qui représente un arrondissement.
+            type: string
+            required: false
+            example: RAML
+        responses:
+            200:
+              description: La liste des installations a été correctement envoyée.
+              body:
                 hey
-      404:
-        description: Le nom spécifié n'existe pas.
-      500:
-        description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-  delete:
-    description: Supprimer une installation selon son nom.
-    responses:
-      200:
-        description: L'installation a été supprimée.
-      404:
-        description: Le nom spécifié n'existe pas.
-      500:
-description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+            500:
+              description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+/{id}:
+    get:
+        description: Fournir l'information d'une installation précise.
+        responses:
+          200:
+            description: Les données de l'installation ont été correctement envoyées.
+            body:
+                hey
+          404:
+            description: L'id spécifié n'existe pas.
+          500:
+            description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+    patch:
+        description: Fournir l'information d'une installation précise.
+        responses:
+            200:
+              description: Les données de l'installation ont été correctement envoyées.
+              body:
+                application/json:
+                    schema: !include ../schemas/schemas.json
+            400:
+              description: La requête ne respecte pas le format attendu.
+            404:
+              description: L'id spécifié n'existe pas.
+            500:
+              description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+    delete:
+        description: Supprimer une installation selon son id.
+        responses:
+            200:
+                description: L'installation a été supprimée.
+            404:
+                description: Le nom spécifié n'existe pas.
+            500:
+                description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
