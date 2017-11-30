@@ -1,57 +1,45 @@
-#%RAML 1.0
+#%RAML 0.8
 ---
-title: Installations de la ville de Montréal.
+title: Dossiers
 baseUri: http://localhost:3000
 version: 1
 
-/installations:
-    get:
-        description: Fournir la liste des installations.
-        queryParameters:
-        recherche:
-            description: Une chaîne de caractères qui représente un arrondissement.
-            type: string
-            required: false
-            example: RAML
-        responses:
-            200:
-              description: La liste des installations a été correctement envoyée.
-              body:
-                hey
-            500:
-              description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-/{id}:
-    get:
-        description: Fournir l'information d'une installation précise.
-        responses:
-          200:
-            description: Les données de l'installation ont été correctement envoyées.
-            body:
-                hey
-          404:
-            description: L'id spécifié n'existe pas.
-          500:
-            description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-    patch:
-        description: Fournir l'information d'une installation précise.
-        responses:
-            200:
-              description: Les données de l'installation ont été correctement envoyées.
-              body:
-                application/json:
-                    schema: !include ../schemas/schemas.json
-            400:
-              description: La requête ne respecte pas le format attendu.
-            404:
-              description: L'id spécifié n'existe pas.
-            500:
-              description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-    delete:
-        description: Supprimer une installation selon son id.
-        responses:
-            200:
-                description: L'installation a été supprimée.
-            404:
-                description: Le nom spécifié n'existe pas.
-            500:
-                description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+/dossiers:
+  get:
+    description: Obtenir tous les dossiers.
+    responses:
+      200:
+        description: "Tous les dossiers."
+        body:
+          application/json:
+            schema: !include ../schemas/patch-input.json
+      500:
+        description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+  post:
+    description: Création d'un dossier.
+    body:
+      application/json:
+        schema: !include ../schemas/patch-input.json
+    responses:
+      201:
+        description: Le dossier a été créé.
+        body:
+          application/json:
+            schema: !include ../schemas/patch-input.json
+      400:
+        description: Les données reçues n'ont pas le bon format.
+      500:
+        description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+  /{id}:
+    put:
+      description: Modifier un dossier selon son identifiant.
+      body:
+        application/json:
+          schema: !include ../schemas/patch-input.json
+      responses:
+        200:
+          description: Le dossier a été modifié.
+        404:
+          description: L'identifiant spécifié n'existe pas.
+        500:
+description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.

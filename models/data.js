@@ -98,5 +98,4 @@ var sendDataToCollection = function(db, collection, data, callback){
         }
     });
 }
-
 module.exports.GetDataFromMontrealCityAPI = GetDataFromMontrealCityAPI;
