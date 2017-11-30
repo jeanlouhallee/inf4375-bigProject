@@ -20,19 +20,6 @@ var jsonschema = require('jsonschema');
 var schemas = require('./schemas/schemas');
 var raml2html = require('raml2html');
 
-// var configWithDefaultTheme = raml2html.getConfigForTheme();
-
-// router.get('/', function(req, res) {
-//   var onError = function (err) {
-//     console.log(err);
-//     res.sendStatus(500);
-//   };
-//   var onSuccess = function(html) {
-//     res.send(html);
-//   };
-//   raml2html.render("routes/doc/test.raml", configWithDefaultTheme).then(onSuccess, onError);
-// });
-
 router.get('/', function(req, res) {
   var config = raml2html.getDefaultConfig(false);
   var onError = function (err) {
@@ -42,7 +29,7 @@ router.get('/', function(req, res) {
   var onSuccess = function(html) {
     res.send(html);
   };
-  raml2html.render("routes/doc/test.raml", config).then(onSuccess, onError);
+  raml2html.render("routes/doc/doc.raml", config).then(onSuccess, onError);
 });
 
 

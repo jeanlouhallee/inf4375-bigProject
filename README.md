@@ -45,6 +45,9 @@ J'ai fait en sorte qu'il soit impossible de modifier la condition des installati
 
 ### F1 ###
 
+L'application est déployé sur Heroku. J'ai créé deux environnements: [staging](http://inf4375-projet-staging.herokuapp.com) et [production](http://inf4375-projet-prod.herokuapp.com). Pour des fins d'évaluation, veuillez consulter la version en production.
+
+
 Points importants
 -----------------
 
