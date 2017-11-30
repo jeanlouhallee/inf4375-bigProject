@@ -1,45 +1,55 @@
 #%RAML 0.8
 ---
-title: Dossiers
-baseUri: http://localhost:3000
+title: Installations de la ville de Montréal
+baseUri: http://inf4375-projet-prod.herokuapp.com
 version: 1
 
-/dossiers:
+/installations:
   get:
-    description: Obtenir tous les dossiers.
+    description: Obtenir toutes les installations.
     responses:
       200:
-        description: "Tous les dossiers."
+        description: "Toutes les installations."
         body:
           application/json:
             schema: !include ../schemas/patch-input.json
-      500:
-        description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
-  post:
-    description: Création d'un dossier.
-    body:
-      application/json:
-        schema: !include ../schemas/patch-input.json
-    responses:
-      201:
-        description: Le dossier a été créé.
-        body:
-          application/json:
-            schema: !include ../schemas/patch-input.json
-      400:
-        description: Les données reçues n'ont pas le bon format.
       500:
         description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
   /{id}:
-    put:
-      description: Modifier un dossier selon son identifiant.
+    get:
+      description: Obtenir une installation.
+      responses:
+        200:
+          description: "Une installation."
+          body:
+            application/json:
+              schema: !include ../schemas/patch-input.json
+        404:
+          description: L'identifiant spécifié n'existe pas.
+        500:
+          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+    patch:
+      description: Modifier une installation selon son identifiant.
       body:
         application/json:
           schema: !include ../schemas/patch-input.json
       responses:
         200:
-          description: Le dossier a été modifié.
+          description: L'installation a été modifié.
+        400:
+          description: Le format de la requête est invalide.
         404:
           description: L'identifiant spécifié n'existe pas.
         500:
-description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+            description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+/mauvaise_condition:
+  get:
+    description: La liste des installations en mauvaise condition triées en ordre alphabétique selon les noms.
+    body:
+      application/json:
+        schema: !include ../schemas/patch-input.json
+    responses:
+      200:
+        description: Le dossier a été modifié.
+      500:
+          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de dével
