@@ -9,10 +9,10 @@ version: 1
     description: Obtenir toutes les installations.
     responses:
       200:
-        description: "Toutes les installations."
+        description: "Toutes les installations. Certain champs peuvent être présent ou pas selon le type d'installation (voir schméma JSON)."
         body:
           application/json:
-            schema: !include ../schemas/patch-input.json
+            schema: !include ../schemas/get-all-installations.json
       500:
         description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
   /{id}:
@@ -23,7 +23,7 @@ version: 1
           description: "Une installation."
           body:
             application/json:
-              schema: !include ../schemas/patch-input.json
+              schema: !include ../schemas/get-installations.json
         404:
           description: L'identifiant spécifié n'existe pas.
         500:
@@ -36,8 +36,20 @@ version: 1
       responses:
         200:
           description: L'installation a été modifié.
+          body:
+            application/json:
+              schema: !include ../schemas/patch-output.json
         400:
           description: Le format de la requête est invalide.
+        404:
+          description: L'identifiant spécifié n'existe pas.
+        500:
+            description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
+    delete:
+      description: Supprimer une installation selon son identifiant.
+      responses:
+        204:
+          description: L'installation a été supprimé et rien n'est retourné.
         404:
           description: L'identifiant spécifié n'existe pas.
         500:
@@ -47,7 +59,7 @@ version: 1
     description: La liste des installations en mauvaise condition triées en ordre alphabétique selon les noms.
     body:
       application/json:
-        schema: !include ../schemas/patch-input.json
+        schema: !include ../schemas/get-all-installations.json
     responses:
       200:
         description: Le dossier a été modifié.

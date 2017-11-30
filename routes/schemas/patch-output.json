@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "required": true,
+  "additionalProperties": false,
+  "properties": {
+    "_id": {
+      "type": "string",
+      "required": false
+    },
+    "modified_content": {
+      "type": "object",
+      "required": false,
+      "additionnalproperties": {"type": "string"},
+      "properties": {
+        "modifiedProperty": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    "success": {
+      "type": "boolean",
+      "required": true
+    }
+  }
+}

@@ -90,11 +90,16 @@ router.patch('/:id', function(req, res) {
                         if (!result) {
                             res.status(400).json({error: "Can't format JSON"});
                         }else if(result.result.n === 0){
-                            res.status(404).json({error: "Can't find id " + req.params.id});
+                            res.status(404).json({error: "Can't find id " + id});
                         } else if (err) {
                             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                         } else {
-                            res.status(200).json(result.result);
+                            let response = {
+                              "_id" : id,
+                              "modified_content" : req.body,
+                              "success" : true
+                            }
+                            res.status(200).json(response);
                         }
                     });
                 }

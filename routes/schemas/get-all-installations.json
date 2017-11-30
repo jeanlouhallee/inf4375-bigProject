@@ -1,0 +1,39 @@
+{
+  "type": "array",
+  "required": true,
+  "items" : {
+    "type": "object",
+    "required": true,
+    "additionalProperties": {"type": "string"},
+    "properties": {
+      "_id": {
+        "type": "string",
+        "required": true
+      },
+      "id_uev": {
+        "type": "string",
+        "required": true
+      },
+      "type": {
+        "type": "string",
+        "required": true
+      },
+      "nom": {
+        "type": "string",
+        "required": true
+      },
+      "adresse": {
+        "type": "string",
+        "required": true
+      },
+      "arrondissement": {
+        "type": "string",
+        "required": true
+      },
+      "condition": {
+        "type": "string",
+        "required": false
+      }
+    }
+  }
+}
