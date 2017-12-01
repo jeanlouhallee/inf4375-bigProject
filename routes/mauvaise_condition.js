@@ -23,10 +23,12 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
+            console.log(err);
             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
             db.collection(config.collection).find({condition: "Mauvaise"}).sort({ nom: 1}).toArray(function(err, data){
                 if(err){
+                    console.log(err);
                     res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 }else{
                     res.json(data)

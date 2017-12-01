@@ -26,10 +26,12 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
+            console.log(err);
             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
             db.collection(config.collection).find(req.query).toArray(function(err, data){
                 if(err){
+                    console.log(err);
                     res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 }else{
                     res.json(data)
@@ -43,6 +45,7 @@ router.get('/:id', function(req, res, next) {
     let id;
     database.getConnection(function(err, db){
         if(err){
+            console.log(err);
             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
             try{
@@ -55,6 +58,7 @@ router.get('/:id', function(req, res, next) {
                 if(data.length === 0){
                     res.status(404).json({error: "Can't find id " + req.params.id});
                 }else if (err) {
+                    console.log(err);
                     res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 }
                 else{
@@ -78,6 +82,7 @@ router.patch('/:id', function(req, res) {
         database.getConnection(function(err, db){
             db.collection(config.collection, function (err, collection) {
                 if (err) {
+                    console.log(err);
                     res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 } else {
                     try{
@@ -92,6 +97,7 @@ router.patch('/:id', function(req, res) {
                         }else if(result.result.n === 0){
                             res.status(404).json({error: "Can't find id " + id});
                         } else if (err) {
+                            console.log(err);
                             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                         } else {
                             let response = {

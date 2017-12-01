@@ -23,16 +23,19 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
+            console.log(err);
             err.status = 500;
             next(err);
         }else{
             db.collection(config.collection, function(err, collection){
                 if(err){
+                    console.log(err);
                     err.status = 500;
                     next(err);
                 }else{
                     db.collection(config.collection).distinct("nom", {"nom" : {$ne: null}}, function(err, installations){
                         if(err){
+                            console.log(err);
                             err.status = 500;
                             next(err);
                         }else{

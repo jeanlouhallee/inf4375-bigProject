@@ -43,6 +43,7 @@ var task = cron.schedule('0 0 * * *', function(){
     tasks.refreshDatabase(function(err){
         if(err){
             console.log("Something went terribly wrong...\n\n\n", err);
+            // throw new Error("Scheduled task failed")
         }
     });
 }, false);
@@ -50,6 +51,7 @@ var task = cron.schedule('0 0 * * *', function(){
 tasks.startUpTasks(function(err){
     if(err){
         console.log(err);
+        // throw new Error("Start up task failed");
     }
 });
 
