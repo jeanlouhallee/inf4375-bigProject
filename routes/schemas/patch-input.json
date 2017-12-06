@@ -5,18 +5,22 @@
   "properties": {
     "nom": {
       "type": "string",
+      "minLength": 1,
       "required": false
     },
     "adresse": {
       "type": "string",
+      "minLength": 1,
       "required": false
     },
     "arrondissement": {
       "type": "string",
+      "minLength": 1,
       "required": false
     },
     "condition": {
       "type": "string",
+      "minLength": 1,
       "required": false
     }
   }

@@ -15,30 +15,35 @@
 
 
 module.exports = {
-    updateInstallation: {
-        type: "object",
-        required: true,
-        additionalProperties: false,
-        properties: {
-            nom: {
-                type: "string",
-                required: false
+    "updateInstallation": {
+        "type": "object",
+        "required": true,
+        "additionalProperties": false,
+        "properties": {
+            "nom": {
+                "type": "string",
+                "minLength": 1,
+                "required": false
             },
-            nom: {
-                type: "string",
-                required: false
+            "nom": {
+                "type": "string",
+                "minLength": 1,
+                "required": false
             },
-            adresse: {
-                type: "string",
-                required: false
+            "adresse": {
+                "type": "string",
+                "minLength": 1,
+                "required": false
             },
-            arrondissement: {
-                type: "string",
-                required: false
+            "arrondissement": {
+                "type": "string",
+                "minLength": 1,
+                "required": false
             },
-            condition: {
-                type: "string",
-                required: false,
+            "condition": {
+                "type": "string",
+                "minLength": 1,
+                "required": false,
             }
         }
     }

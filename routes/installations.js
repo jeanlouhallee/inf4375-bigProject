@@ -76,10 +76,8 @@ router.patch('/:id', function(req, res) {
     var result = jsonschema.validate(req.body, schemas.updateInstallation);
     if(!(!req.body.condition && req.body.type !== "Glissade")){
         res.status(400).json({error: "You can't modify field condition on installations other than Glissade"});
-        return
     } else if (result.errors.length > 0) {
         res.status(400).json(result);
-        return;
         } else {
         database.getConnection(function(err, db){
             db.collection(config.collection, function (err, collection) {
@@ -91,7 +89,6 @@ router.patch('/:id', function(req, res) {
                         id = new mongodb.ObjectId(req.params.id);
                     }catch(err){
                         res.status(404).json({error: "Can't find id " + req.params.id});
-                        return;
                     }
                     collection.update({_id: id}, {$set : req.body}, function(err, result) {
                         if (!result) {
