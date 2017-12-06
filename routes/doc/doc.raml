@@ -7,6 +7,12 @@ version: 1
 /installations:
   get:
     description: Obtenir toutes les installations.
+    queryParameters:
+      recherche:
+        description: Une chaine de caractère qui représente une propriété existante d'une installation.
+        type: string
+        required: false
+        example: /?arrondissement=Verdun&nom=Parc Cooney
     responses:
       200:
         description: "Toutes les installations. Certain champs peuvent être présent ou pas selon le type d'installation (voir schméma JSON)."
