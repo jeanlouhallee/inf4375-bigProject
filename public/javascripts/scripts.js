@@ -1,4 +1,4 @@
-//- Copyright 2017 Jean-Lou Hallée.
+  //- Copyright 2017 Jean-Lou Hallée.
 //-
 //- Licensed under the Apache License, Version 2.0 (the "License");
 //- you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ $(document).ready( function () {
             data: mongoUpdateBody,
             success: function(){
                 alert("Installation " + id + " updated successfuly!");
-                window.location = '/';
+                document.location = '/';
             },
             error: function(jqXHR, exception){
                 let errorMessage;
@@ -35,7 +35,7 @@ $(document).ready( function () {
                         errorMessage = "Not found\nError status: ";
                         break;
                     default:
-                        window.location = '/';
+                        document.location = '/';
                         break;
                 }
                 alert(errorMessage + jqXHR.status);
@@ -53,7 +53,7 @@ $(document).ready( function () {
             type: 'DELETE',
             success: function(){
                 alert("data deleted!");
-                window.location = "/";
+                document.location = "/";
             },
             error: function(jqXHR, exception){
                 let errorMessage;
@@ -65,7 +65,7 @@ $(document).ready( function () {
                         errorMessage = "Not found\nError status: ";
                         break;
                     default:
-                        window.location = '/';
+                        document.location = '/';
                         break;
                 }
                 alert(errorMessage + jqXHR.status);
@@ -141,7 +141,7 @@ $(document).ready(function() {
                         errorMessage = "Not found\nError status: ";
                         break;
                     default:
-                        window.location = '/';
+                        document.location = '/';
                         break;
                 }
                 alert(errorMessage + jqXHR.status);
@@ -195,7 +195,7 @@ $(document).ready(function() {
                         errorMessage = "Not found\nError status: ";
                         break;
                     default:
-                        window.location = '/';
+                        document.location = '/';
                         break;
                 }
                 alert(errorMessage + jqXHR.status);

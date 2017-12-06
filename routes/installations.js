@@ -27,6 +27,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
+          console.log(err);
             logger.error('Error 500', { error: err });
             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
