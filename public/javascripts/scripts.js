@@ -25,9 +25,9 @@ $(document).ready( function () {
                 alert("Installation " + id + " updated successfuly!");
                 window.location = '/';
             },
-            error: function(err){
+            error: function(jqXHR, exception){
                 let errorMessage;
-                switch (err.status){
+                switch (jqXHR.status){
                     case 400:
                         errorMessage = "Bad Request\nError status: ";
                         break;
@@ -35,11 +35,11 @@ $(document).ready( function () {
                         errorMessage = "Not found\nError status: ";
                         break;
                     default:
-                        errorMessage = "Oh, something went wrong! Don't worry, it's not your fault.\nError status: ";
+                        window.location = '/';
                         break;
                 }
-                alert(errorMessage + err.status);
-            }   
+                alert(errorMessage + jqXHR.status);
+            }
         });
     });
 });
@@ -55,8 +55,20 @@ $(document).ready( function () {
                 alert("data deleted!");
                 window.location = "/";
             },
-            error: function(){
-                alert("Couldn't delete installation with id " + id);
+            error: function(jqXHR, exception){
+                let errorMessage;
+                switch (jqXHR.status){
+                    case 400:
+                        errorMessage = "Bad Request\nError status: ";
+                        break;
+                    case 404:
+                        errorMessage = "Not found\nError status: ";
+                        break;
+                    default:
+                        window.location = '/';
+                        break;
+                }
+                alert(errorMessage + jqXHR.status);
             }
         });
     });
@@ -118,6 +130,21 @@ $(document).ready(function() {
                 var html = items.join("");
                 $( '#myTable' ).append(html);
                 $('#searchModal').modal('toggle');
+            },
+            error: function(jqXHR, exception){
+                let errorMessage;
+                switch (jqXHR.status){
+                    case 400:
+                        errorMessage = "Bad Request\nError status: ";
+                        break;
+                    case 404:
+                        errorMessage = "Not found\nError status: ";
+                        break;
+                    default:
+                        window.location = '/';
+                        break;
+                }
+                alert(errorMessage + jqXHR.status);
             }
         })
     });
@@ -157,6 +184,21 @@ $(document).ready(function() {
                 var html = items.join("");
                 $( '#myTable' ).append(html);
                 $('#searchModal').modal('toggle');
+            },
+            error: function(jqXHR, exception){
+                let errorMessage;
+                switch (jqXHR.status){
+                    case 400:
+                        errorMessage = "Bad Request\nError status: ";
+                        break;
+                    case 404:
+                        errorMessage = "Not found\nError status: ";
+                        break;
+                    default:
+                        window.location = '/';
+                        break;
+                }
+                alert(errorMessage + jqXHR.status);
             }
         })
     });

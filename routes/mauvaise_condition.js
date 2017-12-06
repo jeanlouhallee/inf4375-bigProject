@@ -17,18 +17,19 @@
 var express = require('express');
 var mongodb = require('mongodb');
 var database = require('../models/database');
+var logger = require('heroku-logger');
 var config = require('../config/config')[process.env.NODE_ENV || 'development'];
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
-            console.log(err);
+            logger.error('Error 500', { error: err });
             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
             db.collection(config.collection).find({condition: "Mauvaise"}).sort({ nom: 1}).toArray(function(err, data){
                 if(err){
-                    console.log(err);
+                    logger.error('Error 500', { error: err });
                     res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                 }else{
                     res.json(data)
