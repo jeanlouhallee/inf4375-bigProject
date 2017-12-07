@@ -25,7 +25,7 @@ var getConnection = function(callback){
         if (dbInstance) {
             return callback(null, dbInstance);
         }else{
-            var server = new mongodb.Server(config.dbServer, config.dbServerPort, {auto_reconnect: true});
+            var server = new mongodb.Server(config.dbServer, config.dbServerPort, {auto_reconnect: false});
             var db = new mongodb.Db(config.mainDb, server, {safe: true});
             if (!db.openCalled) {
                 db.open(function(err, db) {

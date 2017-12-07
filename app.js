@@ -47,12 +47,12 @@ var task = cron.schedule('0 0 * * *', function(){
     });
 }, false);
 
-tasks.startUpTasks(function(err){
-    if(err){
-        logger.error("Couldn't execute task.", { error: err });
-        throw new Error('Initial task failed.');
-    }
-});
+// tasks.startUpTasks(function(err){
+//     if(err){
+//         logger.error("Couldn't execute task.", { error: err });
+//         throw new Error('Initial task failed.');
+//     }
+// });
 
 task.start();
 
@@ -69,15 +69,15 @@ app.use(function(req, res, next) {
 });
 
 // Error handler for development
-if (app.get('env') === 'developmentzzz') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
+// if (app.get('env') === 'developmentzzz') {
+//     app.use(function(err, req, res, next) {
+//         res.status(err.status || 500);
+//         res.render('error', {
+//             message: err.message,
+//             error: err
+//         });
+//     });
+// }
 
 // Error handler for environments other then dev
 app.use(function(err, req, res, next) {
@@ -86,13 +86,15 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   if(err.status === 404){
       res.render('404');
-  }else if (err.status === 403) {
-      res.render('403');
   } else if (err.status === 400) {
-      res.render('400');
+      if(err.illegalAction){
+          res.status(400).json({error: 'You cannot modify field condition if it is not a Glissade!'});          
+      }else{
+          res.status(400).json({error: 'Bad request'});
+      }
   } else {
-      logger.error('Error 500', { error: err });
-      res.render('500');
+      logger.error('Internal server error 500', { error: err });
+      res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
   }
 });
 

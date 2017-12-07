@@ -18,7 +18,7 @@ module.exports = {
     "updateInstallation": {
         "type": "object",
         "required": true,
-        "additionalProperties": false, // ??????????
+        "additionalProperties": false, // ???????????
         "properties": {
             "nom": {
                 "type": "string",

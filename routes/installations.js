@@ -27,13 +27,11 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
-            logger.error('Error 500', { error: err });
-            res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
+            return next(err);
         }else{
             db.collection(config.collection).find(req.query).toArray(function(err, data){
                 if(err){
-                    logger.error('Error 500', { error: err });
-                    res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
+                    return next(err);
                 }else{
                     res.json(data)
                 }
@@ -46,8 +44,7 @@ router.get('/:id', function(req, res, next) {
     let id;
     database.getConnection(function(err, db){
         if(err){
-            logger.error('Error 500', { error: err });
-            res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
+            return next(err);
         }else{
             try{
                 id = new mongodb.ObjectId(req.params.id);
@@ -56,11 +53,10 @@ router.get('/:id', function(req, res, next) {
                 return;
             }
             db.collection(config.collection).find({_id: id}).toArray(function(err, data){
-                if(data.length === 0){
+                if(data && data.length === 0){
                     res.status(404).json({error: "Can't find id " + req.params.id});
                 }else if (err) {
-                    logger.error('Error 500', { error: err });
-                    res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
+                    return next(err);
                 }
                 else{
                     res.json(data[0]);
@@ -70,85 +66,84 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-router.patch('/:id', function(req, res) {
+router.patch('/:id', function(req, res, next) {
     let id;
     var result = jsonschema.validate(req.body, schemas.updateInstallation);
-    if(!(!req.body.condition && req.body.type !== "Glissade")){
-        res.status(400).json({error: "You can't modify field condition on installations other than Glissade"});
-    } else if (result.errors.length > 0) {
+    var tryingToUpdateConditionNotGlissade = !(!req.body.condition && req.body.type !== "Glissade");
+    if (result && result.errors.length > 0) {
         res.status(400).json(result);
     } else {
         database.getConnection(function(err, db){
+            if(err){
+                return next(err);
+            }else{
+                db.collection(config.collection, function (err, collection) {
+                    if (err) {
+                        return next(err);
+                    } else {
+                        try{
+                            id = new mongodb.ObjectId(req.params.id);
+                        }catch(err){
+                            res.status(404).json({error: "Can't find id " + req.params.id});
+                        }
+                        collection.update({_id: id}, {$set : req.body}, function(err, result) {
+                            if (!result || tryingToUpdateConditionNotGlissade) {
+                                err = new Error();
+                                err.illegalAction = tryingToUpdateConditionNotGlissade;
+                                err.status = 400;
+                                return next(err);
+                            }else if(result.result.n === 0){
+                                res.status(404).json({error: "Can't find id " + id});
+                            } else if (err) {
+                                return next(err);
+                            } else {
+                                let response = {
+                                    "_id" : id,
+                                    "modified_content" : req.body,
+                                    "success" : true
+                                }
+                                res.status(200).json(response);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+});
+
+router.delete('/:id', function(req, res, next) {
+    let id;
+    database.getConnection(function(err, db){
+        if(err){
+            return next(err);
+        }else{
             db.collection(config.collection, function (err, collection) {
                 if (err) {
-                    logger.error('Error 500', { error: err });
-                    res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
+                    return next(err);
                 } else {
                     try{
-                        id = new mongodb.ObjectId(req.params.id);
+                        id = new mongodb.ObjectId(req.params.id)
                     }catch(err){
                         res.status(404).json({error: "Can't find id " + req.params.id});
                         return;
                     }
-                    collection.update({_id: id}, {$set : req.body}, function(err, result) {
-                        if (!result) {
-                            res.status(400).json({error: "Can't format JSON"});
-                        }else if(result && result.result.n === 0){
-                            res.status(404).json({error: "Can't find id " + id});
+                    collection.remove({_id: id}, function(err, result) {
+                        if (result && result.result.n === 0) {
+                            res.status(404).json({error: "Can't find id " + req.params.id});
                         } else if (err) {
-                            logger.error('Error 500', { error: err });
-                            res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
+                            return next(err);
                         } else {
                             let response = {
                                 "_id" : id,
-                                "modified_content" : req.body,
-                                "success" : true
+                                "ok" : 1
                             }
                             res.status(200).json(response);
                         }
                     });
                 }
             });
-        });
-    }
-});
-
-// {
-//     "n": 1,
-//     "opTime": {
-//         "ts": "6496609798702759937",
-//         "t": 1
-//     },
-//     "electionId": "7fffffff0000000000000001",
-//     "ok": 1
-// }
-
-router.delete('/:id', function(req, res) {
-    let id;
-    database.getConnection(function(err, db){
-        db.collection(config.collection, function (err, collection) {
-            if (err) {
-                logger.error('Error 500', { error: err });
-                res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
-            } else {
-                try{
-                    id = new mongodb.ObjectId(req.params.id)
-                }catch(err){
-                    res.status(404).json({error: "Can't find id " + req.params.id});
-                    return;
-                }
-                collection.remove({_id: id}, function(err, result) {
-                    if (result && result.result.n === 0) {
-                        res.status(404).json({error: "Can't find id " + req.params.id});
-                    } else if (err) {
-                        logger.error('Error 500', { error: err });
-                        res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
-                    } else {
-                        res.status(200).json(result);
-                    }
-                });
-            }
-        });
+        }
     });
 });
 

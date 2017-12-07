@@ -53,6 +53,7 @@ Points importants
 
 * Dans l'importation des données, j'ai fait en sorte que toutes les données soient inclus. Il en est de même pour les services `REST` (sauf pour le verbe `PATCH`). Pour ce qui est de l'interface graphique `html` et du verbe `PATCH`, j'ai seulement pris en compte les champs suivants afin de réduire la lourdeur de l'apparence du wite web: id, type, nom, arrondissement, adresse et condition.
 * J'ai utilisé le verbe PATCH au lieu de PUT, car l'énoncé ne spécifie pas que l'on peu créer une installation si elle n'existe pas. J'ai donc pris pour acquis qu'il est impossible de créer une nouvelle ressource.
+* Il est interdit de modifier la condition d'une installation si ce n'est pas une glissade.
 
 Bogues
 ------
