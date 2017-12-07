@@ -27,7 +27,6 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     database.getConnection(function(err, db){
         if(err){
-          console.log(err);
             logger.error('Error 500', { error: err });
             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
         }else{
@@ -78,7 +77,7 @@ router.patch('/:id', function(req, res) {
         res.status(400).json({error: "You can't modify field condition on installations other than Glissade"});
     } else if (result.errors.length > 0) {
         res.status(400).json(result);
-        } else {
+    } else {
         database.getConnection(function(err, db){
             db.collection(config.collection, function (err, collection) {
                 if (err) {
@@ -93,16 +92,16 @@ router.patch('/:id', function(req, res) {
                     collection.update({_id: id}, {$set : req.body}, function(err, result) {
                         if (!result) {
                             res.status(400).json({error: "Can't format JSON"});
-                        }else if(result.result.n === 0){
+                        }else if(result && result.result.n === 0){
                             res.status(404).json({error: "Can't find id " + id});
                         } else if (err) {
                             logger.error('Error 500', { error: err });
                             res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});
                         } else {
                             let response = {
-                              "_id" : id,
-                              "modified_content" : req.body,
-                              "success" : true
+                                "_id" : id,
+                                "modified_content" : req.body,
+                                "success" : true
                             }
                             res.status(200).json(response);
                         }
@@ -127,7 +126,7 @@ router.delete('/:id', function(req, res) {
                     res.status(404).json({error: "Can't find id " + req.params.id});
                 }
                 collection.remove({_id: id}, function(err, result) {
-                    if (result.result.n === 0) {
+                    if (result && result.result.n === 0) {
                         res.status(404).json({error: "Can't find id " + req.params.id});
                     } else if (err) {
                         logger.error('Error 500', { error: err });
