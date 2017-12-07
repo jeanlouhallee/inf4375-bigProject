@@ -88,6 +88,7 @@ router.patch('/:id', function(req, res) {
                         id = new mongodb.ObjectId(req.params.id);
                     }catch(err){
                         res.status(404).json({error: "Can't find id " + req.params.id});
+                        return;
                     }
                     collection.update({_id: id}, {$set : req.body}, function(err, result) {
                         if (!result) {
@@ -124,6 +125,7 @@ router.delete('/:id', function(req, res) {
                     id = new mongodb.ObjectId(req.params.id)
                 }catch(err){
                     res.status(404).json({error: "Can't find id " + req.params.id});
+                    return;
                 }
                 collection.remove({_id: id}, function(err, result) {
                     if (result && result.result.n === 0) {
