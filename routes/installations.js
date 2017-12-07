@@ -113,6 +113,16 @@ router.patch('/:id', function(req, res) {
     }
 });
 
+// {
+//     "n": 1,
+//     "opTime": {
+//         "ts": "6496609798702759937",
+//         "t": 1
+//     },
+//     "electionId": "7fffffff0000000000000001",
+//     "ok": 1
+// }
+
 router.delete('/:id', function(req, res) {
     let id;
     database.getConnection(function(err, db){
