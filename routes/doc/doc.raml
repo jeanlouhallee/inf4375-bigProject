@@ -63,11 +63,11 @@ version: 1
 /mauvaise_condition:
   get:
     description: La liste des installations en mauvaise condition triées en ordre alphabétique selon les noms.
-    body:
-      application/json:
-        schema: !include ../schemas/get-all-installations.json
     responses:
       200:
         description: La liste des installations en mauvaise condition.
+        body:
+          application/json:
+            schema: !include ../schemas/get-all-installations.json
       500:
-          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de dédéveloppement
+          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de développement.
