@@ -3,7 +3,8 @@ Projet de session INF4375
 
 Installation du Projet
 ----------------------
-* Il suffit de cloner le repository sur un poste local. Ensuite, afin de partir l'application, il faut entrer la commande 'npm start' à la racine du projet,    
+* Il suffit de cloner le dépôt git sur un poste local. Ensuite, afin de partir l'application, il faut entrer la commande 'npm start' à la racine du projet.
+* Par défaut, NODE_ENV est égal à 'development'. Pour accéder à la page d'accueil de l'application web, il faut aller sur http://localhost:3000 dans un fureteur web.
 
 Points importants
 -----------------

@@ -169,11 +169,15 @@ var cleanOutput = function(string) {
 
 var createJsonObjectForMongoUpdate = function(data) {
   var result = {};
-  var isGlissade = data[1].value === "Glissade";
+  console.log(data);
   for (var i = 0; i < data.length; i++) {
-    if(!(!isGlissade && data[i].name === "condition")){
       result[data[i].name] = data[i].value;
     }
-  }
+    console.log(result);
+    if(result.type !== "Glissade"){
+        delete result.condition;
+    }
+    delete result.type;
+    console.log(result);
   return JSON.stringify(result);
 }
