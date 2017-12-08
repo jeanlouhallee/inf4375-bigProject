@@ -42,7 +42,7 @@ var getConnection = function(callback){
         if (dbInstance) {
             return callback(null, dbInstance);
         }else{
-            mongodb.connect(process.env.MONGOLAB_URI, {}, function(err, db){
+            mongodb.connect(process.env.MONGOLAB_UR, {}, function(err, db){
                 dbInstance = db;
                 return callback(err, dbInstance);
             });
