@@ -47,12 +47,12 @@ var task = cron.schedule('0 0 * * *', function(){
     });
 }, false);
 
-// tasks.startUpTasks(function(err){
-//     if(err){
-//         logger.error("Couldn't execute task.", { error: err });
-//         throw new Error('Initial task failed.');
-//     }
-// });
+tasks.startUpTasks(function(err){
+    if(err){
+        logger.error("Couldn't execute task.", { error: err });
+        throw new Error('Initial task failed.');
+    }
+});
 
 task.start();
 
@@ -68,21 +68,9 @@ app.use(function(req, res, next) {
     next(err);
 });
 
-// Error handler for development
-// if (app.get('env') === 'developmentzzz') {
-//     app.use(function(err, req, res, next) {
-//         res.status(err.status || 500);
-//         res.render('error', {
-//             message: err.message,
-//             error: err
-//         });
-//     });
-// }
-
 // Error handler for environments other then dev
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   if(err.status === 404){
       res.render('404');
