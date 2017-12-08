@@ -135,21 +135,6 @@ router.patch('/:id', function(req, res, next) {
     });
 });
 
-var isTheUpdateLegal = function(collection, id, body, callback){
-    if(body.condition){
-        collection.find({_id: id}, function(err, data){
-            if(err){
-                return callback(err);
-            } else{
-                if(data.type === "Glissade"){
-                    return callback(null);
-                }
-                return callback("Unauthorized");
-            }
-        });
-    }
-    return callback(null);
-}
 
 router.delete('/:id', function(req, res, next) {
     let id;
