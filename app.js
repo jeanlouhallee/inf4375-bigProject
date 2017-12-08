@@ -87,11 +87,7 @@ app.use(function(err, req, res, next) {
   if(err.status === 404){
       res.render('404');
   } else if (err.status === 400) {
-      if(err.illegalAction){
-          res.status(400).json({error: 'You cannot modify field condition if it is not a Glissade!'});          
-      }else{
-          res.status(400).json({error: 'Bad request'});
-      }
+      res.status(400).json({error: 'Bad request'});
   } else {
       logger.error('Internal server error 500', { error: err });
       res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});

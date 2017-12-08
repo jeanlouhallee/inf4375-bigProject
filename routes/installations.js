@@ -69,8 +69,7 @@ router.get('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res, next) {
     let id;
     var result = jsonschema.validate(req.body, schemas.updateInstallation);
-    var tryingToUpdateConditionNotGlissade = !(!req.body.condition && req.body.type !== "Glissade");
-    if (result && result.errors.length > 0) {
+    if (result.errors.length > 0) {
         res.status(400).json(result);
     } else {
         database.getConnection(function(err, db){
@@ -83,34 +82,74 @@ router.patch('/:id', function(req, res, next) {
                     } else {
                         try{
                             id = new mongodb.ObjectId(req.params.id);
+                            collection.find({_id: id}).toArray(function(err, data){
+                                if(err){
+                                    return callback(err);
+                                } else{
+                                    if(req.body.condition && data[0].type !== "Glissade"){
+                                        res.status(400).json({error: 'You cannot modify field condition if it is not a Glissade!'});
+                                    } else{
+                                        next();
+                                    }
+                                }
+                            });
                         }catch(err){
                             res.status(404).json({error: "Can't find id " + req.params.id});
                         }
-                        collection.update({_id: id}, {$set : req.body}, function(err, result) {
-                            if (!result || tryingToUpdateConditionNotGlissade) {
-                                err = new Error();
-                                err.illegalAction = tryingToUpdateConditionNotGlissade;
-                                err.status = 400;
-                                return next(err);
-                            }else if(result.result.n === 0){
-                                res.status(404).json({error: "Can't find id " + id});
-                            } else if (err) {
-                                return next(err);
-                            } else {
-                                let response = {
-                                    "_id" : id,
-                                    "modified_content" : req.body,
-                                    "success" : true
-                                }
-                                res.status(200).json(response);
-                            }
-                        });
                     }
                 });
             }
         });
     }
 });
+
+router.patch('/:id', function(req, res, next) {
+    let id;
+    database.getConnection(function(err, db){
+        if(err){
+            return next(err);
+        }else{
+            db.collection(config.collection, function (err, collection) {
+                if (err) {
+                    return next(err);
+                } else {
+                    id = new mongodb.ObjectId(req.params.id);
+                    collection.update({_id: id}, {$set : req.body}, function(err, result) {
+                        if(result.result.n === 0){
+                            res.status(404).json({error: "Can't find id " + id});
+                        } else if (err) {
+                            return next(err);
+                        } else {
+                            let response = {
+                                "_id" : id,
+                                "modified_content" : req.body,
+                                "success" : true
+                            }
+                            res.status(200).json(response);
+                            return;
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+var isTheUpdateLegal = function(collection, id, body, callback){
+    if(body.condition){
+        collection.find({_id: id}, function(err, data){
+            if(err){
+                return callback(err);
+            } else{
+                if(data.type === "Glissade"){
+                    return callback(null);
+                }
+                return callback("Unauthorized");
+            }
+        });
+    }
+    return callback(null);
+}
 
 router.delete('/:id', function(req, res, next) {
     let id;
