@@ -26,7 +26,7 @@ version: 1
       description: Obtenir une installation.
       responses:
         200:
-          description: "Une installation."
+          description: "Une installation"
           body:
             application/json:
               schema: !include ../schemas/get-installations.json
@@ -68,6 +68,6 @@ version: 1
         schema: !include ../schemas/get-all-installations.json
     responses:
       200:
-        description: Le dossier a été modifié.
+        description: La liste des installations en mauvaise condition.
       500:
-          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de dével
+          description: Une erreur interne s'est produite. L'erreur a été signalée à l'équipe de dédéveloppement
