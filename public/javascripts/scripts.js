@@ -58,7 +58,7 @@ $(document).ready( function () {
       .find('[name="id"]').val(response._id).end()
       .find('[name="type"]').val(response.type).end()
       .find('[name="nom"]').val(response.nom).end()
-      .find('[name="adresse"]').val(response.adresse).end()
+      .find('[name="adresse"]').val(cleanOutput(response.adresse)).end()
       .find('[name="arrondissement"]').val(response.arrondissement).end()
       .find('[name="condition"]').val(cleanOutput(response.condition)).end()
       .find('[name="condition"]').attr('disabled', isNotGlissade);
@@ -173,11 +173,5 @@ var createJsonObjectForMongoUpdate = function(data) {
   for (var i = 0; i < data.length; i++) {
       result[data[i].name] = data[i].value;
     }
-    console.log(result);
-    if(result.type !== "Glissade"){
-        delete result.condition;
-    }
-    delete result.type;
-    console.log(result);
   return JSON.stringify(result);
 }
