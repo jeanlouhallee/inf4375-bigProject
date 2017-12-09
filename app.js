@@ -21,7 +21,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('heroku-logger');
 var cron = require('node-cron');
-var tasks = require('./tasks');
+var database = require('./models/database');
+var data_import = require('./data_import');
 var index = require('./routes/index');
 var doc = require('./routes/doc');
 var installations = require('./routes/installations');
@@ -39,20 +40,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var task = cron.schedule('0 0 * * *', function(){
-    tasks.refreshDatabase(function(err){
+var task = cron.schedule('*/1 * * * *', function(){
+    data_import.task(function(err){
         if(err){
             logger.error("Couldn't execute task.", { error: err });
         }
     });
 }, false);
-
-tasks.startUpTasks(function(err){
-    if(err){
-        logger.error("Couldn't execute task.", { error: err });
-        throw new Error('Initial task failed.');
-    }
-});
 
 task.start();
 

@@ -21,7 +21,6 @@ var schemas = require('./schemas/schemas');
 var database = require('../models/database');
 var logger = require('heroku-logger');
 var config = require('../config/config')[process.env.NODE_ENV || 'development'];
-var data = require('../models/data');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
