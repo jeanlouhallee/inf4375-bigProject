@@ -13,7 +13,7 @@ Points importants
 
 * Dans l'importation des données, j'ai fait en sorte que toutes les données soient inclus. Il en est de même pour les services `REST` (sauf pour le verbe `PATCH`). Pour ce qui est de l'interface graphique `html` et du verbe `PATCH`, j'ai seulement pris en compte les champs suivants afin de réduire la lourdeur de l'apparence du wite web: id, type, nom, arrondissement, adresse et condition.
 * Il est interdit de modifier la condition d'une installation si ce n'est pas une glissade.
-* Il est également possible d'aller consulter la version sur heroku : http://inf4375-projet-prod.herokuapp.com
+* Il est également possible d'aller consulter la version sur heroku : https://inf4375-projet-prod.herokuapp.com
 
 Bogues
 ------
