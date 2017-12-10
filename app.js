@@ -29,6 +29,7 @@ var installations = require('./routes/installations');
 var mauvaiseCondition = require('./routes/mauvaise_condition');
 
 var app = express();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -61,14 +62,13 @@ app.use(function(req, res, next) {
     next(err);
 });
 
-// Error handler for environments other then dev
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.status(err.status || 500);
   if(err.status === 404){
-      res.render('404');
+       res.status(404).json({error: 'Not found.'});
   } else if (err.status === 400) {
-      res.status(400).json({error: 'Bad request'});
+      res.status(400).json({error: 'Bad request.'});
   } else {
       logger.error('Internal server error 500', { error: err });
       res.status(500).json({error: "Internal server error; don't worry, it's not your fault."});

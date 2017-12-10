@@ -141,7 +141,6 @@ var task = function(callback, next){
     });
 }
 
-//Fonction inspirée du site web http://techslides.com/convert-csv-to-json-in-javascript
 var csvToJSON = function(csv){
   var lines = csv.split("\n");
   var result = [];

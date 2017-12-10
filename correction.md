@@ -6,12 +6,12 @@ Fonctionnalités à corriger
 
 ### A1 ###
 
-Code placé dans **./models/data**.
+Code placé dans **./task.js** et **./data_import.js**.
 L'importation s'effectue au startup de l'application.
 
 ### A2 ###
 
-Code placé dans **./app.js** et utilise du code placé dans **./tasks.js**.
+Code placé dans **./app.js** et utilise du code placé dans **./task.js** et **./data_import.js**.
 
 ### A3 ###
 
@@ -51,6 +51,7 @@ L'application est déployé sur Heroku. J'ai créé deux environnements: [stagin
 Points importants
 -----------------
 
+* L'url en local à utiliser est http://localhost:3000 et http://inf4375-projet-prod.herokuapp.com pour la version sur heroku.
 * Dans l'importation des données, j'ai fait en sorte que toutes les données soient inclus. Il en est de même pour les services `REST` (sauf pour le verbe `PATCH`). Pour ce qui est de l'interface graphique `html` et du verbe `PATCH`, j'ai seulement pris en compte les champs suivants afin de réduire la lourdeur de l'apparence du wite web: id, type, nom, arrondissement, adresse et condition.
 * J'ai utilisé le verbe PATCH au lieu de PUT, car l'énoncé ne spécifie pas que l'on peu créer une installation si elle n'existe pas. J'ai donc pris pour acquis qu'il est impossible de créer une nouvelle ressource.
 * Il est interdit de modifier la condition d'une installation si ce n'est pas une glissade.
@@ -59,4 +60,4 @@ Points importants
 Bogues
 ------
 
-Aucun bogue à signaler pour le moment.
+* En cas d'erreur 500, il faut repartir le serveur manuellement une fois l'erreur résolue (aucun mécanisme de recouvrement implanté).
