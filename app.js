@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var task = cron.schedule('0 0 * * *', function(){
+var task = cron.schedule('0 0 0 * * *', function(){
     data_import.task(function(err){
         if(err){
             logger.error("Couldn't execute task.", { error: err });
